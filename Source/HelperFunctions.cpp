@@ -1,0 +1,57 @@
+#include "HelperFunctions.h"
+
+
+const sf::Texture HelperFunctions::LoadImage(const std::string& Path)
+{
+	sf::Texture Texture;
+	bool TextureLoaded = Texture.loadFromFile(Path);
+	if (!TextureLoaded)
+	{
+		std::cout << "HELPERFUNCTIONS:: cannot load texture: " << Path << std::endl;
+	}
+	return Texture;
+}
+
+sf::Sprite HelperFunctions::ConstructSprite(const sf::Texture& Texture)
+{
+	/*
+		Pass texture by reference!
+	*/
+	sf::Sprite Sprite(Texture);
+	return Sprite;
+}
+
+const sf::Font HelperFunctions::LoadFont(const std::string& Path)
+{
+	sf::Font Font;
+	bool FontLoaded = Font.openFromFile(Path);
+	if (!FontLoaded)
+	{
+		std::cout << "HELPERFUNCTIONS:: cannot load font: " << Path << std::endl;
+	}
+	return Font;
+}
+
+sf::Text HelperFunctions::ConstructText(const sf::Font& Font)
+{
+	return sf::Text(Font);
+}
+
+void HelperFunctions::RecenterSprite(const sf::Texture& InTexture, sf::Sprite& Sprite)
+{
+	sf::Vector2u TextureSize = InTexture.getSize();
+	sf::Vector2f ImageOrigin = static_cast<sf::Vector2f>(TextureSize);
+	ImageOrigin.x = TextureSize.x / 2.f;
+	ImageOrigin.y = TextureSize.y / 2.f;
+	Sprite.setOrigin(ImageOrigin);
+}
+
+void HelperFunctions::SetSpriteSizePixels(sf::Sprite &InSprite, float TargetX, float TargetY)
+{
+	sf::Vector2f Scale;
+	sf::Vector2u TextureSize = InSprite.getTexture().getSize();
+	sf::Vector2f ImageSize = static_cast<sf::Vector2f>(TextureSize);
+	Scale.x = (float)TargetX / ImageSize.x;
+	Scale.y = (float)TargetY / ImageSize.y;
+	InSprite.setScale(Scale);
+}
