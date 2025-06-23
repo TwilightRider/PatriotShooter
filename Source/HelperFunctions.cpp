@@ -7,7 +7,8 @@ const sf::Texture HelperFunctions::LoadImage(const std::string& Path)
 	bool TextureLoaded = Texture.loadFromFile(Path);
 	if (!TextureLoaded)
 	{
-		std::cout << "HELPERFUNCTIONS:: cannot load texture: " << Path << std::endl;
+		//std::cout << "HELPERFUNCTIONS:: cannot load texture: " << Path << std::endl;
+		LOG("HELPERFUNCTIONS::", "cannot load texture")
 	}
 	return Texture;
 }
@@ -27,7 +28,8 @@ const sf::Font HelperFunctions::LoadFont(const std::string& Path)
 	bool FontLoaded = Font.openFromFile(Path);
 	if (!FontLoaded)
 	{
-		std::cout << "HELPERFUNCTIONS:: cannot load font: " << Path << std::endl;
+		//std::cout << "HELPERFUNCTIONS:: cannot load font: " << Path << std::endl;
+		LOG("HELPERFUNCTIONS::", " cannot load font")
 	}
 	return Font;
 }
@@ -54,4 +56,17 @@ void HelperFunctions::SetSpriteSizePixels(sf::Sprite &InSprite, float TargetX, f
 	Scale.x = (float)TargetX / ImageSize.x;
 	Scale.y = (float)TargetY / ImageSize.y;
 	InSprite.setScale(Scale);
+}
+
+sf::Vector2f HelperFunctions::CalculateVector(const sf::Vector2f& StartPosition, const sf::Vector2f& EndPosition)
+{
+	sf::Vector2f DirectionVector;
+	DirectionVector.x = EndPosition.x - StartPosition.x;
+	DirectionVector.y = EndPosition.y - StartPosition.y;
+
+	float VectorLength = DirectionVector.length();
+	DirectionVector.x /= VectorLength;
+	DirectionVector.y /= VectorLength;
+
+	return DirectionVector;
 }

@@ -36,6 +36,12 @@
     <ClCompile Include="Source\ContentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayerObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -62,6 +68,12 @@
     <ClInclude Include="Source\Structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PlayerObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\times.ttf">
@@ -79,6 +91,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Images\T_DefaultChecker.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\T_Background_02.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

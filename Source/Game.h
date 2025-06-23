@@ -8,11 +8,13 @@
 #include <SFML/Window.hpp>
 
 #include "Enemy.h"
+#include "Projectile.h"
+#include "PlayerObject.h"
 #include "Enums.h"
 #include "HelperFunctions.h"
-#include "Projectile.h"
 #include "Structs.h"
 #include "ContentManager.h"
+#include "PlayerController.h"
 
 /*Game instance class*/
 
@@ -35,11 +37,16 @@ private:
 	sf::Text GamePopUpText = HelperFunctions::ConstructText(Font);
 
 	//Background
-	const sf::Texture BackgroundTexture = HelperFunctions::LoadImage("./Images/T_Background.png");
+	sf::Texture BackgroundTexture = ContentManager::GetInstance()->BackgroundTexture;
 	sf::Sprite BackgroundPlate = HelperFunctions::ConstructSprite(BackgroundTexture);
 	// Crosshair
-	const sf::Texture CrosshairTexture = HelperFunctions::LoadImage("./Images/T_Crosshair.png");
+	sf::Texture CrosshairTexture = ContentManager::GetInstance()->CrosshairTexture;
 	sf::Sprite CrosshairSprite = HelperFunctions::ConstructSprite(CrosshairTexture);
+
+	// Declare main character
+	PlayerController* Controller = nullptr;
+	PlayerObject* Player = nullptr;
+	sf::Vector2f PlayerStartPosition;
 
 	// Scene container
 	Structs::Scene* GameScene = nullptr;
@@ -79,17 +86,23 @@ private:
 	void InitText();
 	void InitBackground();
 	void InitCursor();
+	void InitPlayerStartPosition();
+	void InitPlayerContoller();
 
 	// Update methods
 	void pollEvents();
 	void UpdateMousePositions();
 	void UpdateProjectiles();
+	void UpdatePlayer();
+	void UpdatePlayerController();
 	void UpdateEnemies();
 	void UpdateCursor();
+	void UpdateText();
 	void UpdateGameSessionState();
 
 	// Rendering methods
 	void RenderText();
+	void RenderPlayer();
 	void RenderEnemies();
 	void RenderProjectiles();
 	void RenderBackground();
@@ -97,7 +110,7 @@ private:
 	
 	// Gameplay
 	Enums::EnemyClass UpdateComplexityLevel();
-	std::vector<Enums::EnemyClass> EnemyLevels = { Enums::EnemyClass::EASY, Enums::EnemyClass::MEDIUM, Enums::EnemyClass::HARD };
+	std::array<Enums::EnemyClass, 3> EnemyLevels = { Enums::EnemyClass::EASY, Enums::EnemyClass::MEDIUM, Enums::EnemyClass::HARD };
 	// Enemy weights
 	struct EnemyWeights {
 		std::array<float, 3> Level1 = { 100.f, 0.f, 0.f };
@@ -115,11 +128,15 @@ public:
 	virtual ~Game();
 
 	char Framerate = 60;
+	float DeltaTime = 0.f;
+	float GameTime = 0.f;
 	const bool isRunning() const;
 
 	// Methods
 	void update();
 	void RenderScene();
 	void SpawmEnemy();
+	void SpawnProjectile(const sf::Vector2f& StartPosition);
+	void SpawnPlayer();
 };
 

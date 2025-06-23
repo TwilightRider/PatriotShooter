@@ -2,6 +2,7 @@
 #include "SFML/Graphics/Texture.hpp"
 #include "HelperFunctions.h"
 
+
 class ContentManager
 {
 private:
@@ -12,15 +13,18 @@ private:
 	ContentManager();
 	~ContentManager() { delete InstancePtr; };
 
+	void LoadResources();
+
 	ContentManager(const ContentManager&) = delete; // Prevent copy constructor
 	ContentManager& operator=(const ContentManager&) = delete; // Prevent copy assignme
 
 public:
-	sf::Texture DefaultTexture = HelperFunctions::LoadImage("./Images/T_DefaultChecker.png");
-	sf::Texture TXTRocket01 = HelperFunctions::LoadImage("./Images/T_Rocket_01.png");
-	sf::Texture CrosshairTexture = HelperFunctions::LoadImage("./Images/T_Crosshair.png");
-	sf::Texture BackgroundTexture = HelperFunctions::LoadImage("./Images/T_Background.png");
-	
+	// List of resources
+	sf::Texture DefaultTexture;
+	sf::Texture TXTRocket01;
+	sf::Texture CrosshairTexture;
+	sf::Texture BackgroundTexture;
+
 
 	static ContentManager* GetInstance()
 	{

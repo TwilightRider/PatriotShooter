@@ -3,9 +3,6 @@
 void Enemy::ConstructEnemy()
 {
 	this->InitVariables();
-	this->EnemyShape.setPosition(this->CurrentPosition);
-	this->EnemyShape.setSize(static_cast<sf::Vector2f>(this->Size));
-	this->EnemyShape.setFillColor(this->Color);
 	this->ConstructCollision(this->Size.x, this->Size.y, false);
 }
 
@@ -35,6 +32,9 @@ void Enemy::InitVariables()
 		this->DownMovementSpeed = 7;
 		break;
 	}
+	this->EnemyShape.setPosition(this->CurrentPosition);
+	this->EnemyShape.setSize(static_cast<sf::Vector2f>(this->Size));
+	this->EnemyShape.setFillColor(this->Color);
 }
 
 void Enemy::UpdateEnemy()
@@ -47,6 +47,7 @@ void Enemy::ForceSetPosition(const sf::Vector2f& Position)
 	this->EnemyShape.setPosition(Position);
 	this->CollisionRectangle->setPosition(Position);
 }
+
 
 void Enemy::UpdatePosition()
 {
@@ -61,8 +62,9 @@ void Enemy::UpdateEntity()
 	this->UpdateEnemy();
 }
 
-Enemy::Enemy()
+Enemy::Enemy(Enums::EnemyClass EnemyLevel)
 {
+	this->EnemyLevel = EnemyLevel;
 	this->ConstructEnemy();
 }
 

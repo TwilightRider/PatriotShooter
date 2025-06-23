@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
 #include "Entity.h"
+#include "ContentManager.h"
 
 class Enemy : public Entity
 {
@@ -29,7 +30,7 @@ public:
 	void ForceSetPosition(const sf::Vector2f& Position);
 	void UpdateEntity() override;
 
-	Enemy();
+	Enemy(Enums::EnemyClass EnemyLevel);
 	
 };
 

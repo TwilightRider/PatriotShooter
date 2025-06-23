@@ -7,7 +7,10 @@ void Entity::ConstructCollision(float SizeX, float SizeY, bool bRecenter)
 	this->bHasCollision = true;
 	this->CollisionSize = Size;
 	
-	this->CollisionRectangle = new sf::RectangleShape(Size);
+	if (this->CollisionRectangle == nullptr)
+	{
+		this->CollisionRectangle = new sf::RectangleShape(Size);
+	}
 	this->CollisionRectangle->setFillColor(this->CollisionColor);
 	if (bRecenter)
 	{
@@ -18,7 +21,8 @@ void Entity::ConstructCollision(float SizeX, float SizeY, bool bRecenter)
 
 Entity::~Entity()
 {
-
+	//LOG("Destruct Entity", "");
+	delete this->CollisionRectangle;
 }
 
 
@@ -49,6 +53,11 @@ sf::RectangleShape* Entity::GetCollision()
 	return this->CollisionRectangle;
 }
 
+sf::Vector2f Entity::GetPosition()
+{
+	return this->Position;
+}
+
 void Entity::PrintClassName(const std::string &Text)
 {
 	std::cout << Text << typeid(*this).name() << std::endl;
@@ -65,7 +74,7 @@ bool Entity::KillOutsideOfWindow()
 		{
 			return true;
 		}
-		return false;
 	}
+	return false;
 }
 

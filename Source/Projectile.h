@@ -5,8 +5,6 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/System/Vector2.hpp"
-#include "ContentManager.h" 
-#include "HelperFunctions.h"
 
 
 class Projectile : public Entity
@@ -29,14 +27,12 @@ public:
 
 	// Move to function for read only
 	bool bProjectileHit = false;
-	
-	sf::Vector2f CalculateVector(sf::Vector2f StartPosition, sf::Vector2f EndPosition);
 
 	void SetEnemiesInScene(std::vector<Enemy*> InEnemyList);
 	void UpdateEntity() override;
 
 	// Constructor
-	Projectile(sf::Vector2f& Start, sf::Vector2f& End);
+	Projectile(const sf::Vector2f& Start, const sf::Vector2f& End);
 	~Projectile() {};
 
 

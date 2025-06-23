@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#define LOG(logtype, msg) std::cout << logtype << msg << std::endl;
 
 class HelperFunctions
 {
@@ -17,6 +18,9 @@ public:
 	static void RecenterSprite(const sf::Texture& InTexture, sf::Sprite& Sprite);
 
 	static void SetSpriteSizePixels(sf::Sprite& InSprite, float TargetX, float TargetY);
+
+	static sf::Vector2f CalculateVector(const sf::Vector2f& StartPosition, const sf::Vector2f& EndPosition);
+
 };
 
 

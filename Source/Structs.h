@@ -9,7 +9,6 @@
 class Structs
 {
 public:
-
 	struct Scene {
 
 		std::vector<Enemy*> pEnemies;
@@ -17,8 +16,8 @@ public:
 
 		int GetObjectsCount()
 		{
-			std::cout << "Projectile count: " << pProjectiles.size() << std::endl;
-			std::cout << "Enemies count: " << pEnemies.size() << std::endl;
+			//std::cout << "Projectile count: " << pProjectiles.size() << std::endl;
+			//std::cout << "Enemies count: " << pEnemies.size() << std::endl;
 			return pEnemies.size() + pProjectiles.size();
 		}
 

@@ -21,7 +21,8 @@ void Projectile::ConstructProjectile()
 	HelperFunctions::RecenterSprite(this->Sprite.getTexture(), this->Sprite);
 	HelperFunctions::SetSpriteSizePixels(this->Sprite, this->ProjectileSizeX, this->ProjectileSizeY);
 
-	this->ProjectileDirection = this->CalculateVector(this->StartPosition, this->DestinationPosition) * this->ProjectileSpeed;
+	sf::Vector2f ToMouseDir = HelperFunctions::CalculateVector(this->StartPosition, this->DestinationPosition);
+	this->ProjectileDirection = ToMouseDir * this->ProjectileSpeed;
 	this->SetSpriteRotation();
 }
 
@@ -76,20 +77,6 @@ void Projectile::SetSpriteRotation()
 }
 
 
-sf::Vector2f Projectile::CalculateVector(sf::Vector2f StartPosition, sf::Vector2f EndPosition)
-{
-	sf::Vector2f DirectionVector;
-	DirectionVector.x = EndPosition.x - StartPosition.x;
-	DirectionVector.y = EndPosition.y - StartPosition.y;
-
-	float VectorLength = DirectionVector.length();
-	DirectionVector.x /= VectorLength;
-	DirectionVector.y /= VectorLength;
-
-	return DirectionVector;
-}
-
-
 void Projectile::SetEnemiesInScene(std::vector<Enemy*> InEnemyList)
 {
 	this->pEnemies = InEnemyList;
@@ -97,7 +84,7 @@ void Projectile::SetEnemiesInScene(std::vector<Enemy*> InEnemyList)
 
 
 // Constructor
-Projectile::Projectile(sf::Vector2f& Start, sf::Vector2f& End)
+Projectile::Projectile(const sf::Vector2f& Start, const sf::Vector2f& End)
 {	
 	this->StartPosition = Start;
 	this->DestinationPosition = End;

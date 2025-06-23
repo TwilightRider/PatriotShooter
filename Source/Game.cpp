@@ -21,14 +21,16 @@ void Game::InitGameSession()
     this->Health = 100;
     this->EnemySpawnTimerMax = 50.f;
     this->EnemySpawnTimer = 0.f; 
-    this->MaxEnemies = 0;
+    this->MaxEnemies = 6;
     this->MissedEnemies = 0;
     this->UserLevelPoints = 0;
     this->CurrentUserLevel = 1;
     this->LevelMaxPoints = 200;
     this->EnemyIdCounter = 0;
-
+    this->DeltaTime = 0.f;
     this->InitText();
+    this->InitPlayerStartPosition();
+
     if (this->GameScene == nullptr)
     {
         this->GameScene = new Structs::Scene(this->MaxEnemies, 30);
@@ -37,6 +39,7 @@ void Game::InitGameSession()
     {
         GameScene->ClearScene();
     }
+    this->SpawnPlayer();
 }
 
 
@@ -95,6 +98,23 @@ void Game::InitCursor()
 
 }
 
+void Game::InitPlayerStartPosition()
+{
+    sf::Vector2f Position;
+    Position.x = this->VideoMode.size.x * 0.5f;
+    Position.y = this->VideoMode.size.y - 100.f;
+    this->PlayerStartPosition = Position;
+}
+
+
+void Game::InitPlayerContoller()
+{
+    if (this->Controller == nullptr)
+    {
+        this->Controller = new PlayerController;
+    }
+}
+
 
 // Constructor / Destructor
 Game::Game()
@@ -110,6 +130,8 @@ Game::Game()
 
 Game::~Game()
 {
+    delete this->Player;
+    delete this->Controller;
 	delete this->GameWindow;
     delete this->GameScene;
 }
@@ -129,6 +151,7 @@ void Game::update()
     this->pollEvents();
     this->UpdateCursor();
     this->UpdateMousePositions();
+    this->UpdateText();
     this->UpdateGameSessionState();
 }
 
@@ -173,8 +196,11 @@ void Game::pollEvents()
         {
             // Handle custom LMB events here
             //std::cout << "PRESSED" << std::endl;
+            if (!this->PauseGame)
+            {
+                this->SpawnProjectile(this->Player->GetPosition());
+            }
         }
-
     }
 }
 
@@ -201,6 +227,17 @@ void Game::UpdateProjectiles()
     }
 }
 
+void Game::UpdatePlayer()
+{
+    this->Player->MousePosition = this->MousePositionView;
+    this->Player->UpdateEntity();
+}
+
+void Game::UpdatePlayerController()
+{
+
+}
+
 
 void Game::SpawmEnemy()
 {
@@ -210,12 +247,12 @@ void Game::SpawmEnemy()
     */
     
     // Notificate scene changed
-    // Call enemy handler to define which level of enemy to spawn
-    Enums::EnemyClass EnemyLevel = this->UpdateComplexityLevel();
     // Register Id
     this->EnemyIdCounter += 1;
+    // Call enemy handler to define which level of enemy to spawn
+    Enums::EnemyClass EnemyLevel = this->UpdateComplexityLevel();
     // Construct enemy
-    Enemy* NewEnemy = new Enemy;
+    Enemy* NewEnemy = new Enemy(EnemyLevel);
     NewEnemy->EnemyId = this->EnemyIdCounter;
     sf::RectangleShape& EnemyRectangleShape = NewEnemy->EnemyShape;
 
@@ -225,6 +262,30 @@ void Game::SpawmEnemy()
     NewEnemy->ForceSetPosition(RandomPosition);
     this->GameScene->AddObjectToScene(NewEnemy);
     this->SendEnemiesToProjectiles();
+}
+
+
+void Game::SpawnProjectile(const sf::Vector2f& StartPosition)
+{
+    Projectile* SpawnedProjectile = new Projectile(StartPosition, this->MousePositionView);
+    SpawnedProjectile->WorldSize = this->WorldBounds;
+    this->GameScene->AddObjectToScene(SpawnedProjectile);
+    // Notificate scene changed
+    this->SendEnemiesToProjectiles();
+}
+
+
+void Game::SpawnPlayer()
+{
+    if (this->Player == nullptr)
+    {
+        this->Player = new PlayerObject(this->PlayerStartPosition);
+    }
+    else
+    {
+        this->Player->InitVariables();
+        this->Player->ForceSetPosition(this->PlayerStartPosition);
+    }
 }
 
 
@@ -240,13 +301,11 @@ void Game::UpdateEnemies()
         return;
     }
 
+
+    // Track if enemy has to be destroyed
     for (unsigned i = 0; i < this->GameScene->pEnemies.size(); i++)
     {
         Enemy* CurrentEnemy = this->GameScene->pEnemies[i];
-        if (CurrentEnemy == nullptr)
-        {
-            continue;
-        }
         if (CurrentEnemy->GetEntityIsNeedToDestroy())
         {
             this->GameScene->RemoveFromScene(CurrentEnemy, i);
@@ -256,7 +315,7 @@ void Game::UpdateEnemies()
     }
 
 
-    // Track enemies count possibly move to scene?
+    // Track enemies count
     if (this->GameScene->pEnemies.size() < this->MaxEnemies)
     {
         if (this->EnemySpawnTimer >= this->EnemySpawnTimerMax)
@@ -270,43 +329,39 @@ void Game::UpdateEnemies()
         }
     }
 
+
+    // Handle enemy hit
     for (unsigned i = 0; i < this->GameScene->pEnemies.size(); i++)
     {
         Enemy* CurrentEnemy = this->GameScene->pEnemies[i];
-        if (CurrentEnemy == nullptr)
+        if (!CurrentEnemy->bHit)
         {
             continue;
         }
-        if (CurrentEnemy->bHit)
+        // Register kill points
+        this->UserLevelPoints += CurrentEnemy->KillReward;
+
+        // Remove enemy
+        CurrentEnemy->CallEntityDestruction();
+
+        // Update complexity
+        if (this->UserLevelPoints >= LevelMaxPoints)
         {
-            std::cout << "Killed" << std::endl;
-            // Register kill points
-            this->UserLevelPoints += CurrentEnemy->KillReward;
-
-            // Remove enemy
-            CurrentEnemy->CallEntityDestruction();
-
-            // Update complexity
-            if (this->UserLevelPoints >= LevelMaxPoints)
-            {
-                // Increment level
-                this->CurrentUserLevel += 1;
-                // Reset level points
-                this->UserLevelPoints = 0;
-                std::cout << "Current Level:" << this->CurrentUserLevel << "\n";
-            }
+            // Increment level
+            this->CurrentUserLevel += 1;
+            // Reset level points
+            this->UserLevelPoints = 0;
+            std::cout << "Current Level:" << this->CurrentUserLevel << "\n";
         }
+        
     }
     
-    // Update position here
+
+    // Update entity here
     for (unsigned i = 0; i < this->GameScene->pEnemies.size(); i++)
     {
         // Get reference on enemy class
         Enemy* CurrentEnemyClass = this->GameScene->pEnemies[i];
-        if (CurrentEnemyClass == nullptr)
-        {
-            continue;
-        }
         CurrentEnemyClass->UpdateEntity();
         // Get sf shape associated with class
         sf::RectangleShape& CurrentEnemyShape = CurrentEnemyClass->EnemyShape;
@@ -314,34 +369,11 @@ void Game::UpdateEnemies()
         // if enemy is past the bottom
         if (CurrentEnemyShape.getPosition().y + CurrentEnemyShape.getSize().y > this->GameWindow->getSize().y)
         {
-            this->Health -= 100;
+            this->Health -= 5;
             this->MissedEnemies += 1;
             CurrentEnemyClass->CallEntityDestruction();
         }
     }
-
-    // Spawn Projectile
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-    {
-        // Allow only one press one kill
-        if (!this->LMBPressed)
-        {
-            this->LMBPressed = true;
-            // Shot projectile from here
-            sf::Vector2f ShotPosition = { 512.f, 500 };
-   
-            Projectile* SpawnedProjectile = new Projectile(ShotPosition, this->MousePositionView);
-            SpawnedProjectile->WorldSize = this->WorldBounds;
-            this->GameScene->AddObjectToScene(SpawnedProjectile);
-            // Notificate scene changed
-            this->SendEnemiesToProjectiles();
-        }
-    }
-    else
-    {
-        this->LMBPressed = false;
-    }
-    
 }
 
 
@@ -396,6 +428,12 @@ void Game::UpdateCursor()
     this->CrosshairSprite.setPosition(this->MousePositionView);
 }
 
+void Game::UpdateText()
+{
+    std::string PlayerInfo = "Score: " + std::to_string(this->UserLevelPoints);
+    this->InfoString.setString(PlayerInfo);
+}
+
 void Game::UpdateGameSessionState()
 {
     // Handle gameplay update
@@ -403,6 +441,7 @@ void Game::UpdateGameSessionState()
     {
         this->UpdateEnemies();
         this->UpdateProjectiles();
+        this->UpdatePlayer();
         this->RenderPopUpText = false;
     }
 
@@ -436,6 +475,12 @@ void Game::RenderText()
         this->GameWindow->draw(this->GamePopUpText);
     }
     
+}
+
+
+void Game::RenderPlayer()
+{
+    this->GameWindow->draw(this->Player->Sprite);
 }
  
 
@@ -499,6 +544,7 @@ void Game::RenderScene()
     this->RenderBackground();
     
     // Draw game objects
+    this->RenderPlayer();
     this->RenderEnemies();
     this->RenderProjectiles();
 
