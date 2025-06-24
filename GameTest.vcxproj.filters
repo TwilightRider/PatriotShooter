@@ -36,10 +36,10 @@
     <ClCompile Include="Source\ContentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerObject.cpp">
+    <ClCompile Include="Source\TurretObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerController.cpp">
+    <ClCompile Include="Source\PlayerTurretController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +68,10 @@
     <ClInclude Include="Source\Structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PlayerObject.h">
+    <ClInclude Include="Source\TurretObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PlayerController.h">
+    <ClInclude Include="Source\PlayerTurretController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

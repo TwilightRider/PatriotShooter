@@ -9,12 +9,12 @@
 
 #include "Enemy.h"
 #include "Projectile.h"
-#include "PlayerObject.h"
+#include "TurretObject.h"
 #include "Enums.h"
 #include "HelperFunctions.h"
 #include "Structs.h"
 #include "ContentManager.h"
-#include "PlayerController.h"
+#include "PlayerTurretController.h"
 
 /*Game instance class*/
 
@@ -43,9 +43,9 @@ private:
 	sf::Texture CrosshairTexture = ContentManager::GetInstance()->CrosshairTexture;
 	sf::Sprite CrosshairSprite = HelperFunctions::ConstructSprite(CrosshairTexture);
 
-	// Declare main character
-	PlayerController* Controller = nullptr;
-	PlayerObject* Player = nullptr;
+	// Declare main player
+	PlayerTurretController* PlayerController = nullptr;
+	TurretObject* Player = nullptr;
 	sf::Vector2f PlayerStartPosition;
 
 	// Scene container
@@ -91,10 +91,10 @@ private:
 
 	// Update methods
 	void pollEvents();
+	void SendDeltaTimeToEntities();
 	void UpdateMousePositions();
-	void UpdateProjectiles();
 	void UpdatePlayer();
-	void UpdatePlayerController();
+	void UpdateProjectiles();
 	void UpdateEnemies();
 	void UpdateCursor();
 	void UpdateText();

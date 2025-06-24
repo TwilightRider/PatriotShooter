@@ -19,7 +19,7 @@ public:
 
 	static void SetSpriteSizePixels(sf::Sprite& InSprite, float TargetX, float TargetY);
 
-	static sf::Vector2f CalculateVector(const sf::Vector2f& StartPosition, const sf::Vector2f& EndPosition);
+	static sf::Vector2f CalculateNormalizedVector(const sf::Vector2f& StartPosition, const sf::Vector2f& EndPosition);
 
 };
 

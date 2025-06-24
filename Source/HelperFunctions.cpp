@@ -58,7 +58,7 @@ void HelperFunctions::SetSpriteSizePixels(sf::Sprite &InSprite, float TargetX, f
 	InSprite.setScale(Scale);
 }
 
-sf::Vector2f HelperFunctions::CalculateVector(const sf::Vector2f& StartPosition, const sf::Vector2f& EndPosition)
+sf::Vector2f HelperFunctions::CalculateNormalizedVector(const sf::Vector2f& StartPosition, const sf::Vector2f& EndPosition)
 {
 	sf::Vector2f DirectionVector;
 	DirectionVector.x = EndPosition.x - StartPosition.x;

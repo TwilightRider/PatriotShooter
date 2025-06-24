@@ -19,6 +19,12 @@ void Entity::ConstructCollision(float SizeX, float SizeY, bool bRecenter)
 }
 
 
+Entity::Entity()
+{
+	this->ClassName = typeid(this).name();
+	LOG("Class:", this->ClassName);
+}
+
 Entity::~Entity()
 {
 	//LOG("Destruct Entity", "");
@@ -56,6 +62,11 @@ sf::RectangleShape* Entity::GetCollision()
 sf::Vector2f Entity::GetPosition()
 {
 	return this->Position;
+}
+
+std::string Entity::GetClassName()
+{
+	return this->ClassName;
 }
 
 void Entity::PrintClassName(const std::string &Text)

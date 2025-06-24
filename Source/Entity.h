@@ -5,6 +5,7 @@
 #include "ContentManager.h" 
 #include "HelperFunctions.h"
 
+
 class Entity
 {
 protected:
@@ -24,13 +25,16 @@ protected:
 public:
 
 	// Constructor Destructor
-	Entity() {};
+	Entity();
 	~Entity();
 	
 	sf::Vector2f WorldSize;
+	float DeltaTime = 0.f;
+	float DeltaTimer = 0.f;
+	float Timer = 0.f;
 	float EntityLifeTime = 0;
 	float EntityMaxLifeTime = 0;
-	bool DrawDebugCollision = false;
+	bool bDrawDebugCollision = false;
 	bool GetEntityIsNeedToDestroy();
 
 	virtual void UpdateEntity();
@@ -38,9 +42,11 @@ public:
 	void CallEntityDestruction();
 	sf::RectangleShape* GetCollision();
 	sf::Vector2f GetPosition();
+	std::string GetClassName();
 
 private:
 	sf::Vector2f CollisionSize;
 	bool bDestroyEntity = false;
+	std::string ClassName = "";
 };
 

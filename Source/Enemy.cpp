@@ -64,6 +64,7 @@ void Enemy::UpdateEntity()
 
 Enemy::Enemy(Enums::EnemyClass EnemyLevel)
 {
+	Entity::Entity();
 	this->EnemyLevel = EnemyLevel;
 	this->ConstructEnemy();
 }

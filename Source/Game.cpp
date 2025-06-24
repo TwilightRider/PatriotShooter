@@ -5,7 +5,7 @@ void Game::SendEnemiesToProjectiles()
 {
     for (Projectile *ProjectilePointer : this->GameScene->pProjectiles)
     {
-        ProjectilePointer->SetEnemiesInScene(this->GameScene->pEnemies);
+        //ProjectilePointer->SetEnemiesInScene(this->GameScene->pEnemies);
     }
 }
 
@@ -107,15 +107,6 @@ void Game::InitPlayerStartPosition()
 }
 
 
-void Game::InitPlayerContoller()
-{
-    if (this->Controller == nullptr)
-    {
-        this->Controller = new PlayerController;
-    }
-}
-
-
 // Constructor / Destructor
 Game::Game()
 {
@@ -131,7 +122,7 @@ Game::Game()
 Game::~Game()
 {
     delete this->Player;
-    delete this->Controller;
+    delete this->PlayerController;
 	delete this->GameWindow;
     delete this->GameScene;
 }
@@ -148,11 +139,11 @@ void Game::update()
     /*
         Game update every tick?
     */
+    this->UpdateGameSessionState();
     this->pollEvents();
     this->UpdateCursor();
     this->UpdateMousePositions();
     this->UpdateText();
-    this->UpdateGameSessionState();
 }
 
 
@@ -198,7 +189,7 @@ void Game::pollEvents()
             //std::cout << "PRESSED" << std::endl;
             if (!this->PauseGame)
             {
-                this->SpawnProjectile(this->Player->GetPosition());
+                //this->SpawnProjectile(this->Player->GetPosition());
             }
         }
     }
@@ -229,13 +220,14 @@ void Game::UpdateProjectiles()
 
 void Game::UpdatePlayer()
 {
-    this->Player->MousePosition = this->MousePositionView;
+    // Send data to player controller
+    this->PlayerController->MousePosition = this->MousePositionView;
+    this->PlayerController->GameScene = this->GameScene;
+    this->PlayerController->WorldBounds = this->WorldBounds;
+    this->PlayerController->UpdateMovement();
+
+    this->Player->DeltaTime = this->DeltaTime;
     this->Player->UpdateEntity();
-}
-
-void Game::UpdatePlayerController()
-{
-
 }
 
 
@@ -261,17 +253,17 @@ void Game::SpawmEnemy()
 
     NewEnemy->ForceSetPosition(RandomPosition);
     this->GameScene->AddObjectToScene(NewEnemy);
-    this->SendEnemiesToProjectiles();
+    //this->SendEnemiesToProjectiles();
 }
 
-
+//DEPRECATED
 void Game::SpawnProjectile(const sf::Vector2f& StartPosition)
 {
-    Projectile* SpawnedProjectile = new Projectile(StartPosition, this->MousePositionView);
-    SpawnedProjectile->WorldSize = this->WorldBounds;
-    this->GameScene->AddObjectToScene(SpawnedProjectile);
+    //Projectile* SpawnedProjectile = new Projectile(StartPosition, this->MousePositionView);
+    //SpawnedProjectile->WorldSize = this->WorldBounds;
+    //this->GameScene->AddObjectToScene(SpawnedProjectile);
     // Notificate scene changed
-    this->SendEnemiesToProjectiles();
+    //this->SendEnemiesToProjectiles();
 }
 
 
@@ -279,13 +271,21 @@ void Game::SpawnPlayer()
 {
     if (this->Player == nullptr)
     {
-        this->Player = new PlayerObject(this->PlayerStartPosition);
+        this->Player = new TurretObject(this->PlayerStartPosition);
+        this->Player->PosessedByPlayer = true;
     }
     else
     {
         this->Player->InitVariables();
         this->Player->ForceSetPosition(this->PlayerStartPosition);
     }
+
+    if (this->PlayerController == nullptr)
+    {
+        this->PlayerController = new PlayerTurretController;
+        
+    }
+    PlayerController->PlayerEntity = this->Player;
 }
 
 
@@ -310,7 +310,7 @@ void Game::UpdateEnemies()
         {
             this->GameScene->RemoveFromScene(CurrentEnemy, i);
             delete CurrentEnemy;
-            this->SendEnemiesToProjectiles();
+            //this->SendEnemiesToProjectiles();
         }
     }
 
@@ -480,7 +480,8 @@ void Game::RenderText()
 
 void Game::RenderPlayer()
 {
-    this->GameWindow->draw(this->Player->Sprite);
+    this->GameWindow->draw(this->Player->BaseSprite);
+    this->GameWindow->draw(this->Player->TurretSprite);
 }
  
 
@@ -493,7 +494,7 @@ void Game::RenderEnemies()
             continue;
         }
         this->GameWindow->draw(CurrentEnemy->EnemyShape);
-        if (CurrentEnemy->DrawDebugCollision)
+        if (CurrentEnemy->bDrawDebugCollision)
         {
             this->GameWindow->draw(*CurrentEnemy->GetCollision());
         }
@@ -510,7 +511,7 @@ void Game::RenderProjectiles()
             continue;
         }
         this->GameWindow->draw(CurrentProjectile->Sprite);
-        if (CurrentProjectile->DrawDebugCollision)
+        if (CurrentProjectile->bDrawDebugCollision)
         {
             this->GameWindow->draw(*CurrentProjectile->GetCollision());
         }

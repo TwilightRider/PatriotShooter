@@ -21,7 +21,7 @@ void Projectile::ConstructProjectile()
 	HelperFunctions::RecenterSprite(this->Sprite.getTexture(), this->Sprite);
 	HelperFunctions::SetSpriteSizePixels(this->Sprite, this->ProjectileSizeX, this->ProjectileSizeY);
 
-	sf::Vector2f ToMouseDir = HelperFunctions::CalculateVector(this->StartPosition, this->DestinationPosition);
+	sf::Vector2f ToMouseDir = HelperFunctions::CalculateNormalizedVector(this->StartPosition, this->DestinationPosition);
 	this->ProjectileDirection = ToMouseDir * this->ProjectileSpeed;
 	this->SetSpriteRotation();
 }
@@ -38,7 +38,7 @@ void Projectile::UpdateProjectile()
 	this->CollisionRectangle->move(this->ProjectileDirection);
 	this->Position = this->Sprite.getPosition();
 
-	for (Enemy* IterEnemy : this->pEnemies)
+	for (Entity* IterEnemy : this->pEnemies)
 	{
 		if (IterEnemy == nullptr)
 		{
@@ -56,7 +56,7 @@ void Projectile::UpdateProjectile()
 		{
 			this->bProjectileHit = true;
 			// Send to enemy class that it was hit
-			IterEnemy->bHit = true;
+			IterEnemy->CallEntityDestruction();
 			break;
 		}
 	}

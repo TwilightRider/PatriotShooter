@@ -8,5 +8,13 @@ public:
 		MEDIUM,
 		HARD
 	};
+
+	enum PlayerControl
+	{
+		FORWARD,
+		ROTATERIGHT,
+		ROTATELEFT,
+		BACKWARDS
+	};
 };
 
