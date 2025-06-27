@@ -45,32 +45,60 @@ void PlayerTurretController::TrackInput()
 		this->bMousePressed = false;
 	}
 
-	sf::Vector2f MoveDir;
-	//const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
+	float MovementSpeed = 0.f;
+	// Works as direction and mask for movement
+	float MoveDir = -1.f;
+	float RotationDirection = 0.f;
+
+	// Rotate Base
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+	{
+		RotationDirection = 1.f;
+		//this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::degrees(this->DeltaTime * this->PlayerRotationSpeed)));
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+	{
+		RotationDirection = -1.f;
+		//this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::degrees(this->DeltaTime * this->PlayerRotationSpeed)));
+	}
+	else
+	{
+		RotationDirection = 0.f;
+	}
 
 	// Continuos keyboard track
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 	{
-		MoveDir = sf::Vector2f({ 0.f, -1.f });
+		MoveDir = -1.f;
+		MovementSpeed = this->ForwardMovementSpeed;
 
 	}
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
-		MoveDir = sf::Vector2f({ 0.f, 1.f });
+		MoveDir = 1.f;
+		// Flip direction for correct backward movement
+		RotationDirection *= -1.f;
+		MovementSpeed = this->ForwardMovementSpeed * this->BackwardsMovementScalar;
 	}
 	else
 	{
-		MoveDir = sf::Vector2f({ 0.f, 0.f });
+		MoveDir = 0.f;
 	}
+
+	this->PlayerAngle = sf::Angle(sf::radians(this->DeltaTime));
+	this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::radians(this->DeltaTime * RotationDirection * this->PlayerRotationSpeed)));
+
 	// Send direction to player
-	this->PlayerEntity->MovementDiretion = MoveDir;
-	this->PlayerEntity->MovementSpeed = 40.f;
+	this->PlayerEntity->MovementDiretion = this->PlayerDirection * MoveDir;
+	this->PlayerEntity->MovementSpeed = MovementSpeed;
+	this->PlayerEntity->BaseAngle = this->PlayerDirection.angle() - this->HalfPI;
 }
 
 
 void PlayerTurretController::FireProjectile()
 {
-	Projectile* SpawnedProjectile = new Projectile(this->PlayerEntity->GetPosition(), this->MousePosition);
+	// Get correct offset position of turret sprite
+	Projectile* SpawnedProjectile = new Projectile(this->PlayerEntity->TurretSprite.getPosition(), this->MousePosition);
 	SpawnedProjectile->WorldSize = this->WorldBounds;
 	this->GameScene->AddObjectToScene(SpawnedProjectile);
 }

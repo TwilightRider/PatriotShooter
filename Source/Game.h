@@ -12,8 +12,11 @@
 #include "TurretObject.h"
 #include "Enums.h"
 #include "HelperFunctions.h"
-#include "Structs.h"
+#include "Scene.h"
+
 #include "ContentManager.h"
+#include "EntityManager.h"
+
 #include "PlayerTurretController.h"
 
 /*Game instance class*/
@@ -49,7 +52,7 @@ private:
 	sf::Vector2f PlayerStartPosition;
 
 	// Scene container
-	Structs::Scene* GameScene = nullptr;
+	Scene* GameScene = nullptr;
 	
 	// Game logic
 	float EnemySpawnTimer;
@@ -91,7 +94,6 @@ private:
 
 	// Update methods
 	void pollEvents();
-	void SendDeltaTimeToEntities();
 	void UpdateMousePositions();
 	void UpdatePlayer();
 	void UpdateProjectiles();
@@ -136,7 +138,6 @@ public:
 	void update();
 	void RenderScene();
 	void SpawmEnemy();
-	void SpawnProjectile(const sf::Vector2f& StartPosition);
 	void SpawnPlayer();
 };
 

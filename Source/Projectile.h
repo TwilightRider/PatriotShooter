@@ -21,14 +21,12 @@ public:
 	sf::Vector2f ProjectileDirection;
 
 	float ProjectileSizeX = 80.f;
-	float ProjectileSizeY = 80.f;
-	float ProjectileCollisionX = 20.f;
-	float ProjectileCollisionY = 70.f;
-	float ProjectileSpeed = 10.f;
+	float ProjectileSizeY = 60.f;
+	float ProjectileCollisionX = 15.f;
+	float ProjectileCollisionY = 15.f;
+	float ProjectileCollisionYOffset = 10.f;
+	float ProjectileSpeed = 13.f;
 	float EntityLifeTime = 5.;
-
-	// Move to function for read only
-	bool bProjectileHit = false;
 
 	void SetEnemiesInScene(std::vector<Enemy*> InEnemyList);
 	void UpdateEntity() override;

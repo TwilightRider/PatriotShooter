@@ -12,20 +12,20 @@ public:
 	bool PosessedByPlayer = false;
 
 	// Turret
-	sf::Texture& TurretTexture = ContentManager::GetInstance()->DefaultTexture;
+	sf::Texture& TurretTexture = ContentManager::GetInstance()->Tank_Turret_01;
 	sf::Sprite TurretSprite = HelperFunctions::ConstructSprite(TurretTexture);
+	sf::Vector2f TurretLocalOffset = sf::Vector2f({ 0.0f, 45.0f });
 
 	// Base
-	sf::Texture& BaseTexture = ContentManager::GetInstance()->DefaultTexture;
+	sf::Texture& BaseTexture = ContentManager::GetInstance()->Tank_Base_01;
 	sf::Sprite BaseSprite = HelperFunctions::ConstructSprite(BaseTexture);
+	sf::Vector2f BaseSize = sf::Vector2f({60.f, 110.f});
+	sf::Vector2f TurretSize = sf::Vector2f({ 45.f, 45.f });
 
-	sf::Vector2f PlayerSize = sf::Vector2f({40.f, 40.f});
-
-	float MovementSpeed = 5.;
-	// Normalized vector
-	sf::Vector2f MovementDiretion;
-
-
+	// Movement
+	float BaseRotationSpeed = 0.f;
+	float MovementSpeed = 5.f;
+	sf::Vector2f MovementDiretion; // Normalized vector
 	sf::Vector2f MousePosition;
 
 	sf::Angle BaseAngle;
@@ -33,7 +33,6 @@ public:
 
 	void InitVariables();
 	void ForceSetPosition(const sf::Vector2f& Position);
-	void SetSpriteRotation(sf::Sprite& InSprite, const sf::Angle& Angle);
 	void UpdateEntity() override;
 	void MoveTurret();
 

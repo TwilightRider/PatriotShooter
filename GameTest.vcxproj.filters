@@ -42,6 +42,9 @@
     <ClCompile Include="Source\PlayerTurretController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
@@ -65,13 +68,19 @@
     <ClInclude Include="Source\ContentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Structs.h">
+    <ClInclude Include="Source\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\TurretObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\PlayerTurretController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -94,6 +103,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Images\T_Background_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\T_Arrow_Pointer_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\T_Tank_Base_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\T_Tank_Turret_01.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

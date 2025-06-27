@@ -1,28 +1,32 @@
 #include "Entity.h"
 
 
-void Entity::ConstructCollision(float SizeX, float SizeY, bool bRecenter)
+void Entity::ConstructCollision(bool bRecenter)
 {
-	sf::Vector2f Size = { SizeX, SizeY };
 	this->bHasCollision = true;
-	this->CollisionSize = Size;
 	
 	if (this->CollisionRectangle == nullptr)
 	{
-		this->CollisionRectangle = new sf::RectangleShape(Size);
+		this->CollisionRectangle = new sf::RectangleShape(this->CollisionSize);
 	}
-	this->CollisionRectangle->setFillColor(this->CollisionColor);
+	
 	if (bRecenter)
 	{
-		this->CollisionRectangle->setOrigin(Size / 2.f);
+		this->CollisionRectangle->setOrigin(this->CollisionSize / 2.f + this->CollisionLocalOffset);
 	}
+	else
+	{
+		this->CollisionRectangle->setOrigin(this->CollisionLocalOffset);
+	}
+
+	this->CollisionRectangle->setFillColor(this->CollisionColor);
 }
 
 
 Entity::Entity()
 {
-	this->ClassName = typeid(this).name();
-	LOG("Class:", this->ClassName);
+	this->ClassName = typeid(*this).name();
+	//LOG("Base constructor called:", "");
 }
 
 Entity::~Entity()
@@ -47,6 +51,11 @@ void Entity::CallEntityDestruction()
 	this->bDestroyEntity = true;
 }
 
+const sf::RectangleShape* Entity::GetCollisionShape()
+{
+	return this->CollisionRectangle;
+}
+
 
 bool Entity::GetEntityIsNeedToDestroy()
 {
@@ -54,12 +63,7 @@ bool Entity::GetEntityIsNeedToDestroy()
 }
 
 
-sf::RectangleShape* Entity::GetCollision()
-{
-	return this->CollisionRectangle;
-}
-
-sf::Vector2f Entity::GetPosition()
+const sf::Vector2f Entity::GetPosition()
 {
 	return this->Position;
 }

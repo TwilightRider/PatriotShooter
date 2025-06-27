@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <SFML/System/Clock.hpp>
 #include "ContentManager.h"
+#include "EntityManager.h"
 #include "HelperFunctions.h"
 
 
@@ -10,6 +11,7 @@ int main()
     Game game = {};
     // Initialize content manager singleton
     ContentManager* ContentManager = ContentManager::GetInstance();
+    EntityManager* EntityManager = EntityManager::GetInstance();
 
     // Timers
     sf::Clock DeltaTimer;

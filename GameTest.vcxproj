@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\HelperFunctions.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -33,13 +34,15 @@
     <ClInclude Include="Source\ContentManager.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Enums.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\HelperFunctions.h" />
     <ClInclude Include="Source\PlayerTurretController.h" />
+    <ClInclude Include="Source\Structs.h" />
     <ClInclude Include="Source\TurretObject.h" />
     <ClInclude Include="Source\Projectile.h" />
-    <ClInclude Include="Source\Structs.h" />
+    <ClInclude Include="Source\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\times.ttf">
@@ -50,6 +53,10 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\T_Arrow_Pointer_01.png">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Image>
     <Image Include="Images\T_Background.png">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
@@ -71,6 +78,14 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </Image>
     <Image Include="Images\T_Rocket_01.png">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Image>
+    <Image Include="Images\T_Tank_Base_01.png">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Image>
+    <Image Include="Images\T_Tank_Turret_01.png">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </Image>

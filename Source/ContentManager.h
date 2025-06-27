@@ -12,11 +12,10 @@ private:
 	// Constructor Destructor
 	ContentManager();
 	~ContentManager() { delete InstancePtr; };
-
-	void LoadResources();
-
 	ContentManager(const ContentManager&) = delete; // Prevent copy constructor
 	ContentManager& operator=(const ContentManager&) = delete; // Prevent copy assignme
+
+	void LoadResources();
 
 public:
 	// List of resources
@@ -24,7 +23,9 @@ public:
 	sf::Texture TXTRocket01;
 	sf::Texture CrosshairTexture;
 	sf::Texture BackgroundTexture;
-
+	sf::Texture ArrowPointer;
+	sf::Texture Tank_Base_01;
+	sf::Texture Tank_Turret_01;
 
 	static ContentManager* GetInstance()
 	{

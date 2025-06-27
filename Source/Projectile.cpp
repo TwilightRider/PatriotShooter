@@ -7,10 +7,11 @@ void Projectile::UpdateEntity()
 	this->UpdateProjectile();
 }
 
+
 void Projectile::ConstructProjectile()
 {
 	// Construct collision
-	this->ConstructCollision(this->ProjectileCollisionX, this->ProjectileCollisionY, true);
+	this->ConstructCollision(true);
 	this->CollisionRectangle->setPosition(this->StartPosition);
 
 	// Construct sprite and set rotation and position
@@ -38,25 +39,17 @@ void Projectile::UpdateProjectile()
 	this->CollisionRectangle->move(this->ProjectileDirection);
 	this->Position = this->Sprite.getPosition();
 
-	for (Entity* IterEnemy : this->pEnemies)
+	for (Enemy* IterEnemy : this->pEnemies)
 	{
-		if (IterEnemy == nullptr)
-		{
-			continue;
-		}
 		// Enemy collision rectangle
-		sf::RectangleShape* CurrentEnemyShape = IterEnemy->GetCollision();
-		const sf::RectangleShape& ProjectileCollision = *this->CollisionRectangle;
-		if (CurrentEnemyShape == nullptr)
-		{
-			continue;
-		}
+		const sf::RectangleShape* CurrentEnemyCollision = IterEnemy->GetCollisionShape();
+		const sf::RectangleShape* ProjectileCollision = this->GetCollisionShape();
 		// Here successfull hit
-		if (CurrentEnemyShape->getGlobalBounds().findIntersection(ProjectileCollision.getGlobalBounds()))
+		if (CurrentEnemyCollision->getGlobalBounds().findIntersection(ProjectileCollision->getGlobalBounds()))
 		{
-			this->bProjectileHit = true;
+			this->bEntityHit = true;
 			// Send to enemy class that it was hit
-			IterEnemy->CallEntityDestruction();
+			IterEnemy->bEntityHit = true;
 			break;
 		}
 	}
@@ -88,5 +81,9 @@ Projectile::Projectile(const sf::Vector2f& Start, const sf::Vector2f& End)
 {	
 	this->StartPosition = Start;
 	this->DestinationPosition = End;
+	this->CollisionSize.x = this->ProjectileCollisionX;
+	this->CollisionSize.y = this->ProjectileCollisionY;
+	this->CollisionLocalOffset.y = ProjectileCollisionYOffset;
+
 	this->ConstructProjectile();
 }
