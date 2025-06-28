@@ -30,6 +30,8 @@ void Game::InitGameSession()
     {
         GameScene->ClearScene();
     }
+    // Send all data to game manager and after spawn main player
+    this->InitGameDataManager();
     this->SpawnPlayer();
 }
 
@@ -97,25 +99,12 @@ void Game::InitPlayerStartPosition()
     this->PlayerStartPosition = Position;
 }
 
-
-// Constructor / Destructor
-Game::Game()
+void Game::InitGameDataManager()
 {
-    this->GameWindow = nullptr;
-    this->initWindow();
-    this->InitWorldSize();
-    this->InitBackground();
-    this->InitCursor();
-    this->InitGameSession();
-}
-
-
-Game::~Game()
-{
-    delete this->Player;
-    delete this->PlayerController;
-	delete this->GameWindow;
-    delete this->GameScene;
+    /* Should be initialized as last function*/
+    this->GameDataManager->WorldBounds = this->WorldBounds;
+    this->GameDataManager->PlayerStartPosition = this->PlayerStartPosition;
+    this->GameDataManager->MousePositionView = this->MousePositionView;
 }
 
 
@@ -211,15 +200,7 @@ void Game::UpdateProjectiles()
 
 void Game::UpdatePlayer()
 {
-    // Send data to player controller
-    this->PlayerController->MousePosition = this->MousePositionView;
-    this->PlayerController->GameScene = this->GameScene;
-    this->PlayerController->WorldBounds = this->WorldBounds;
-    this->PlayerController->DeltaTime = this->DeltaTime;
-    this->PlayerController->UpdateMovement();
-
-    this->Player->DeltaTime = this->DeltaTime;
-    this->Player->UpdateEntity();
+    this->MainPlayer->UpdatePlayer();
 }
 
 
@@ -251,23 +232,17 @@ void Game::SpawmEnemy()
 
 void Game::SpawnPlayer()
 {
-    if (this->Player == nullptr)
+    if (this->MainPlayer == nullptr)
     {
-        this->Player = new TurretObject(this->PlayerStartPosition);
-        this->Player->PosessedByPlayer = true;
+        this->MainPlayer = new Player;
+        MainPlayer->GameScene = this->GameScene;
+
     }
     else
     {
-        this->Player->InitVariables();
-        this->Player->ForceSetPosition(this->PlayerStartPosition);
+        this->MainPlayer->InitVariables();
     }
 
-    if (this->PlayerController == nullptr)
-    {
-        this->PlayerController = new PlayerTurretController;
-        
-    }
-    PlayerController->PlayerEntity = this->Player;
 }
 
 
@@ -408,11 +383,13 @@ void Game::UpdateCursor()
     this->CrosshairSprite.setPosition(this->MousePositionView);
 }
 
+
 void Game::UpdateText()
 {
     std::string PlayerInfo = "Score: " + std::to_string(this->UserLevelPoints);
     this->InfoString.setString(PlayerInfo);
 }
+
 
 void Game::UpdateGameSessionState()
 {
@@ -441,6 +418,18 @@ void Game::UpdateGameSessionState()
         this->GamePopUpText.setFillColor(sf::Color::Blue);
         this->RenderPopUpText = true;
     }
+
+    // Continue to update game data
+    this->UpdateDataManager();
+}
+
+
+void Game::UpdateDataManager()
+{
+    // Mouse data to exchange manager
+    GameDataManager->MousePositionView = this->MousePositionView;
+    // Notify if window size changed?
+    this->GameDataManager->WorldBounds = this->WorldBounds;
 }
 
 
@@ -460,8 +449,8 @@ void Game::RenderText()
 
 void Game::RenderPlayer()
 {
-    this->GameWindow->draw(this->Player->BaseSprite);
-    this->GameWindow->draw(this->Player->TurretSprite);
+    this->GameWindow->draw(this->MainPlayer->PlayerEntity->BaseSprite);
+    this->GameWindow->draw(this->MainPlayer->PlayerEntity->TurretSprite);
 }
  
 
@@ -540,3 +529,21 @@ void Game::RenderScene()
 }
 
 
+// Constructor / Destructor
+Game::Game()
+{
+    this->GameWindow = nullptr;
+    this->initWindow();
+    this->InitWorldSize();
+    this->InitBackground();
+    this->InitCursor();
+    this->InitGameSession();
+}
+
+
+Game::~Game()
+{
+    delete this->MainPlayer;
+    delete this->GameWindow;
+    delete this->GameScene;
+}

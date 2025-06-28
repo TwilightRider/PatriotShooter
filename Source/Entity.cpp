@@ -26,6 +26,7 @@ void Entity::ConstructCollision(bool bRecenter)
 Entity::Entity()
 {
 	this->ClassName = typeid(*this).name();
+	this->WorldBounds = this->GameDataManager->WorldBounds;
 	//LOG("Base constructor called:", "");
 }
 
@@ -38,6 +39,7 @@ Entity::~Entity()
 
 void Entity::UpdateEntity()
 {
+	this->DeltaTime = this->GameDataManager->DeltaTime;
 	this->KillOutsideOfWindow();
 	if ((this->EntityLifeTime >= this->EntityMaxLifeTime && this->EntityMaxLifeTime != 0) || this->KillOutsideOfWindow())
 	{
@@ -84,7 +86,7 @@ bool Entity::KillOutsideOfWindow()
 	if (this->bUseScreenKillZone)
 	{
 		// Construct World Bounds
-		sf::Rect<float> ConstructWindowBounds({ 0., 0. }, { this->WorldSize.x, this->WorldSize.y });
+		sf::Rect<float> ConstructWindowBounds({ 0., 0. }, { this->WorldBounds.x, this->WorldBounds.y });
 		if (!ConstructWindowBounds.contains(this->Position))
 		{
 			return true;

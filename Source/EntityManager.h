@@ -18,7 +18,9 @@ protected:
 	EntityManager(const EntityManager&) = delete; // Prevent copy constructor
 	EntityManager& operator=(const EntityManager&) = delete; // Prevent copy assignme
 
-	void SetStructProperties();
+	void SetEnemiesPrefabs();
+	void SetProjectilesPrefabs();
+	void SetPlayersPrefabs();
 
 	
 public:
@@ -33,16 +35,20 @@ public:
 		return pEntityManager;
 	}
 	
-	// Define enemy types
+	// Define enemy prefabs
 	gamestructs::EnemyPreset* EnemyEasy = new gamestructs::EnemyPreset;
 	gamestructs::EnemyPreset* EnemyMedium = new gamestructs::EnemyPreset;
 	gamestructs::EnemyPreset* EnemyHard = new gamestructs::EnemyPreset;
 	gamestructs::EnemyPreset* Boss = new gamestructs::EnemyPreset;
 
-	// Define projectiles
+	// Define projectiles prefabs
 	gamestructs::ProjectilePreset* GunFire = new gamestructs::ProjectilePreset;
 	gamestructs::ProjectilePreset* SimpleRocket = new gamestructs::ProjectilePreset;
 	gamestructs::ProjectilePreset* HeavyRocket = new gamestructs::ProjectilePreset;
+
+	// Define player prefabs
+	gamestructs::PlayerPreset* PlayerFirstLevel = new gamestructs::PlayerPreset;
+	gamestructs::PlayerPreset* PlayerSecondLevel = new gamestructs::PlayerPreset;
 };
 
 

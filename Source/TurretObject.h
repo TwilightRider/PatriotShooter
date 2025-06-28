@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
 #include "Entity.h"
+#include "Projectile.h"
 
 
 class TurretObject : public Entity
@@ -26,7 +27,6 @@ public:
 	float BaseRotationSpeed = 0.f;
 	float MovementSpeed = 5.f;
 	sf::Vector2f MovementDiretion; // Normalized vector
-	sf::Vector2f MousePosition;
 
 	sf::Angle BaseAngle;
 	sf::Angle TurretAngle;
@@ -34,13 +34,16 @@ public:
 	void InitVariables();
 	void ForceSetPosition(const sf::Vector2f& Position);
 	void UpdateEntity() override;
-	void MoveTurret();
-
+	void MoveTurretByBase();
+	void FireProjectile();
+	Projectile* CurrentProjectile;
+	
 	// Constructor Destructorb
 	TurretObject(const sf::Vector2f& Position);
 	~TurretObject();
 
 private:
 	void ConstructTurret();
+	void MoveTurret();
 };
 

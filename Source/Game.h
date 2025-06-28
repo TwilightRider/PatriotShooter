@@ -16,8 +16,11 @@
 
 #include "ContentManager.h"
 #include "EntityManager.h"
+#include "GameDataManager.h"
 
-#include "PlayerTurretController.h"
+#include "Player.h"
+
+
 
 /*Game instance class*/
 
@@ -46,9 +49,11 @@ private:
 	sf::Texture CrosshairTexture = ContentManager::GetInstance()->CrosshairTexture;
 	sf::Sprite CrosshairSprite = HelperFunctions::ConstructSprite(CrosshairTexture);
 
+	// Get instance of exchange manager
+	GameDataManager* GameDataManager = GameDataManager::GetInstance();
+
 	// Declare main player
-	PlayerTurretController* PlayerController = nullptr;
-	TurretObject* Player = nullptr;
+	Player* MainPlayer = nullptr;
 	sf::Vector2f PlayerStartPosition;
 
 	// Scene container
@@ -90,10 +95,10 @@ private:
 	void InitBackground();
 	void InitCursor();
 	void InitPlayerStartPosition();
-	void InitPlayerContoller();
+	void InitGameDataManager();
 
 	// Update methods
-	void pollEvents();
+	void pollEvents();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 	void UpdateMousePositions();
 	void UpdatePlayer();
 	void UpdateProjectiles();
@@ -101,7 +106,8 @@ private:
 	void UpdateCursor();
 	void UpdateText();
 	void UpdateGameSessionState();
-
+	void UpdateDataManager();
+	
 	// Rendering methods
 	void RenderText();
 	void RenderPlayer();

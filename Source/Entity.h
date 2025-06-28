@@ -5,6 +5,7 @@
 #include "ContentManager.h" 
 #include "HelperFunctions.h"
 #include "EntityManager.h"
+#include "GameDataManager.h"
 
 
 class Entity
@@ -12,6 +13,8 @@ class Entity
 protected:
 	EntityManager* EntityManager = EntityManager::GetInstance();
 	ContentManager* ContentManager = ContentManager::GetInstance();
+	GameDataManager* GameDataManager = GameDataManager::GetInstance();
+
 	sf::Texture& DefaultTexture = ContentManager->DefaultTexture;
 
 	sf::RectangleShape* CollisionRectangle = nullptr;
@@ -33,7 +36,7 @@ public:
 	// Constructor Destructor
 	Entity();
 	virtual ~Entity();
-	sf::Vector2f WorldSize;
+	sf::Vector2f WorldBounds;
 	float DeltaTime = 0.f;
 	float DeltaTimer = 0.f;
 	float Timer = 0.f;
@@ -50,7 +53,7 @@ public:
 	const sf::RectangleShape* GetCollisionShape();
 	std::string GetClassName();
 	const sf::Vector2f GetPosition();
-
+	
 private:
 	bool bDestroyEntity = false;
 	std::string ClassName = "";

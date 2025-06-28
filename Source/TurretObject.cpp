@@ -11,8 +11,15 @@ void TurretObject::InitVariables()
 void TurretObject::ForceSetPosition(const sf::Vector2f& Position)
 {
 	this->Position = Position;
-	//this->TurretSprite.setPosition(Position);
 	this->BaseSprite.setPosition(Position);
+	// Set turret position but include local user offset
+	this->TurretSprite.setPosition(Position + this->TurretLocalOffset);
+}
+
+
+void TurretObject::FireProjectile()
+{
+	this->CurrentProjectile = new Projectile(this->TurretSprite.getPosition(), this->GameDataManager->MousePositionView);
 }
 
 
@@ -24,13 +31,26 @@ void TurretObject::UpdateEntity()
 }
 
 
+void TurretObject::MoveTurretByBase()
+{
+	// Get Base Xform
+	const sf::Transform& BaseXform = this->BaseSprite.getTransform();
+	// Appy World transformation
+	sf::Vector2f TurretPosition = BaseXform * this->TurretLocalOffset;
+	this->TurretSprite.setPosition(TurretPosition);
+	this->TurretSprite.setRotation(this->TurretAngle);
+}
+
+
 void TurretObject::MoveTurret()
 {
 	// Get direction as movement from controller and save new position
 	if (this->Movable || this->PosessedByPlayer)
 	{
-		//this->TurretSprite.move(this->MovementDiretion * this->MovementSpeed * this->DeltaTime);
 		this->BaseSprite.move(this->MovementDiretion * this->MovementSpeed * this->DeltaTime);
+		// Update class position variable after movement
+		this->Position = BaseSprite.getPosition();
+
 		// Rotate Base
 		this->BaseSprite.setRotation(this->BaseAngle);
 
@@ -39,15 +59,8 @@ void TurretObject::MoveTurret()
 			this->CollisionRectangle->setRotation(TurretAngle);
 		}
 
-		// Update class position variable after movement
-		this->Position = BaseSprite.getPosition();
-		// Get Base Xform
-		const sf::Transform& BaseXform = this->BaseSprite.getTransform();
-		// Appy World transformation
-		sf::Vector2f TurretPosition = BaseXform * this->TurretLocalOffset;
-		this->TurretSprite.setPosition(TurretPosition);
+		this->MoveTurretByBase();
 	}
-	this->TurretSprite.setRotation(this->TurretAngle);
 }
 
 
@@ -73,7 +86,7 @@ void TurretObject::ConstructTurret()
 
 	// Construct sprite and set rotation and position
 	this->BaseSprite.setPosition(this->Position);
-
+	
 	// Set removal out of world
 	this->bUseScreenKillZone = false;
 	HelperFunctions::SetSpriteSizePixels(this->TurretSprite, this->TurretSize.x, this->TurretSize.y);
@@ -84,4 +97,6 @@ void TurretObject::ConstructTurret()
 
 	// Add pivot of base to turret local offset
 	this->TurretLocalOffset += this->BaseSprite.getOrigin();
+	this->MoveTurretByBase();
+
 }

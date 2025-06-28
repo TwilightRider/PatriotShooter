@@ -7,14 +7,24 @@ PlayerTurretController::PlayerTurretController()
 }
 
 
-void PlayerTurretController::UpdateMovement()
+void PlayerTurretController::AssignToProjectileSpawn(std::function<void()> Function)
 {
+	this->CallBackProjectile = Function;
+}
+
+
+void PlayerTurretController::UpdatePlayerController()
+{
+	this->DeltaTime = GameDataManager->DeltaTime;
+	this->MousePosition = GameDataManager->MousePositionView;
+
 	if (this->PlayerEntity != nullptr)
 	{
 		// Update movement
 		this->TrackInput();
 		// Rotate turret
 		this->PlayerEntity->TurretAngle = this->SetTurretAngles();
+		this->PlayerEntity->UpdateEntity();
 	}
 }
 
@@ -22,6 +32,8 @@ void PlayerTurretController::UpdateMovement()
 void PlayerTurretController::InitVariables()
 {
 	this->bMousePressed = false;
+	//this->DeltaTime = GameDataManager->DeltaTime;
+	//this->MousePosition = GameDataManager->MousePositionView;
 }
 
 
@@ -37,7 +49,12 @@ void PlayerTurretController::TrackInput()
 		if (!this->bMousePressed)
 		{
 			this->bMousePressed = true;
-			this->FireProjectile();
+			this->PlayerEntity->FireProjectile();
+			// Register projectile shoot
+			if (this->CallBackProjectile)
+			{
+				this->CallBackProjectile();
+			}
 		}
 	}
 	else
@@ -45,6 +62,7 @@ void PlayerTurretController::TrackInput()
 		this->bMousePressed = false;
 	}
 
+	float RotationSpeed = this->PlayerRotationSpeed;
 	float MovementSpeed = 0.f;
 	// Works as direction and mask for movement
 	float MoveDir = -1.f;
@@ -54,12 +72,11 @@ void PlayerTurretController::TrackInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
 		RotationDirection = 1.f;
-		//this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::degrees(this->DeltaTime * this->PlayerRotationSpeed)));
+
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
 		RotationDirection = -1.f;
-		//this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::degrees(this->DeltaTime * this->PlayerRotationSpeed)));
 	}
 	else
 	{
@@ -71,7 +88,7 @@ void PlayerTurretController::TrackInput()
 	{
 		MoveDir = -1.f;
 		MovementSpeed = this->ForwardMovementSpeed;
-
+		RotationSpeed = this->PlayerRotationSpeed;
 	}
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
@@ -79,14 +96,15 @@ void PlayerTurretController::TrackInput()
 		// Flip direction for correct backward movement
 		RotationDirection *= -1.f;
 		MovementSpeed = this->ForwardMovementSpeed * this->BackwardsMovementScalar;
+		RotationSpeed = this->PlayerRotationSpeed * this->BackwardsMovementScalar;
 	}
 	else
 	{
 		MoveDir = 0.f;
 	}
-
+	
 	this->PlayerAngle = sf::Angle(sf::radians(this->DeltaTime));
-	this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::radians(this->DeltaTime * RotationDirection * this->PlayerRotationSpeed)));
+	this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::radians(this->DeltaTime * RotationDirection * RotationSpeed)));
 
 	// Send direction to player
 	this->PlayerEntity->MovementDiretion = this->PlayerDirection * MoveDir;
@@ -98,9 +116,8 @@ void PlayerTurretController::TrackInput()
 void PlayerTurretController::FireProjectile()
 {
 	// Get correct offset position of turret sprite
-	Projectile* SpawnedProjectile = new Projectile(this->PlayerEntity->TurretSprite.getPosition(), this->MousePosition);
-	SpawnedProjectile->WorldSize = this->WorldBounds;
-	this->GameScene->AddObjectToScene(SpawnedProjectile);
+	/*Projectile* SpawnedProjectile = new Projectile(this->PlayerEntity->TurretSprite.getPosition(), this->MousePosition);*/
+	//this->GameScene->AddObjectToScene(SpawnedProjectile);
 }
 
 

@@ -4,7 +4,9 @@ EntityManager* EntityManager::pEntityManager = nullptr;
 
 EntityManager::EntityManager()
 {
-	this->SetStructProperties();
+	this->SetEnemiesPrefabs();
+	this->SetProjectilesPrefabs();
+	this->SetPlayersPrefabs();
 }
 
 
@@ -23,7 +25,7 @@ EntityManager::~EntityManager()
 }
 
 
-void EntityManager::SetStructProperties()
+void EntityManager::SetEnemiesPrefabs()
 {
 	// Compose Easy
 	this->EnemyEasy->Texture = this->ContentManager->DefaultTexture;
@@ -32,7 +34,7 @@ void EntityManager::SetStructProperties()
 	this->EnemyEasy->KillReward = 5;
 	this->EnemyEasy->Health = 1;
 	this->EnemyEasy->bIsBoss = false;
-	
+
 	// Compose Middle
 	this->EnemyMedium->Texture = this->ContentManager->DefaultTexture;
 	this->EnemyMedium->Size = sf::Vector2f({ 33.f, 33.f });
@@ -48,17 +50,28 @@ void EntityManager::SetStructProperties()
 	this->EnemyHard->KillReward = 15;
 	this->EnemyHard->Health = 1;
 	this->EnemyHard->bIsBoss = false;
+}
 
+
+void EntityManager::SetProjectilesPrefabs()
+{
 	// Compose Projectiles
 	this->GunFire->Texture = this->ContentManager->DefaultTexture;
-	this->GunFire->Size = sf::Vector2f({ 5.f, 5.f });
+	this->GunFire->Size = sf::Vector2f({ 8.f, 8.f });
 	this->GunFire->MovementSpeed = 10.f;
 	this->GunFire->Damage = 1;
 
 	// Compose Projectiles
-	this->SimpleRocket->Texture = this->ContentManager->DefaultTexture;
+	this->SimpleRocket->Texture = this->ContentManager->TXTRocket01;
 	this->SimpleRocket->Size = sf::Vector2f({ 80.f, 60.f });
 	this->SimpleRocket->MovementSpeed = 12.f;
 	this->SimpleRocket->Damage = 1;
+}
+
+
+void EntityManager::SetPlayersPrefabs()
+{
+	this->PlayerFirstLevel->Projectile = this->GunFire;
+	this->PlayerSecondLevel->Projectile = this->SimpleRocket;
 }
 

@@ -23,8 +23,10 @@ namespace gamestructs
 		unsigned Damage = 1;
 	};
 
-	struct PlayerPresets
+	struct PlayerPreset
 	{
+		ProjectilePreset* Projectile = nullptr;
+
 
 	};
 }
