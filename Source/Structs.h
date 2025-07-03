@@ -26,7 +26,10 @@ namespace gamestructs
 	struct PlayerPreset
 	{
 		ProjectilePreset* Projectile = nullptr;
+	};
 
+	struct Level
+	{
 
 	};
 }

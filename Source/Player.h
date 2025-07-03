@@ -2,22 +2,26 @@
 #include "PlayerTurretController.h"
 #include "TurretObject.h"
 #include "Structs.h"
-#include "Scene.h"
-#include <functional>
+#include "EntityInterface.h"
 
 
-class Player
+class Player : public IEntity
 {
 private:
-	bool FireProjectile;
+	//bool FireProjectile;
 	// Get instance of exchange manager
 	GameDataManager* GameDataManager = GameDataManager::GetInstance();
 	void UpdatePlayerController();
 
 public:
+	int PlayerLevel = 1;
+	int PlayerPoints = 0;
+
+	unsigned Health;
+	unsigned HealthDecrementRate = 100;
+
 	PlayerTurretController* PlayerController = nullptr;
-	Scene* GameScene = nullptr;
-	TurretObject* PlayerEntity = nullptr;
+	TurretObject* PlayerTurret = nullptr;
 
 	// Constructor destructor
 	Player();
@@ -26,12 +30,7 @@ public:
 
 	void InitVariables();
 
-	void SetNewProperties();
-
-	void UpdatePlayer();
-
-	void SpawnProjectile();
-
-	
+	void UpdateEntity() override;
+	void NotifySceneWasChanged() override;
+	void SendObjectToScene() override;
 };
-

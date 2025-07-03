@@ -12,7 +12,6 @@ class Projectile : public Entity
 {
 public:
 	//Structs::Scene* GameScene = nullptr;
-
 	sf::Texture& SpriteTexture = ContentManager::GetInstance()->TXTRocket01;
 	sf::Sprite Sprite = HelperFunctions::ConstructSprite(SpriteTexture);
 
@@ -28,19 +27,19 @@ public:
 	float ProjectileSpeed = 13.f;
 	float EntityLifeTime = 5.;
 
-	void SetEnemiesInScene(std::vector<Enemy*> InEnemyList);
-	void UpdateEntity() override;
+	void ConstructProjectile();
+	virtual void UpdateEntity() override;
 
-	// Constructor
+	void SendObjectToScene() override;
+	void NotifySceneWasChanged() override;
+
 	Projectile(const sf::Vector2f& Start, const sf::Vector2f& End);
-	~Projectile() {};
-
 
 private:
 	// Pointer to enemies array
 	void UpdateProjectile();
 	void SetSpriteRotation();
-	void ConstructProjectile();
-	std::vector<Enemy*> pEnemies;
+	
+	std::vector<IEntity*> pEnemies;
 };
 

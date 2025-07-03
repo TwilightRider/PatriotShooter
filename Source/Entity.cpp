@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Scene.h"
 
 
 void Entity::ConstructCollision(bool bRecenter)
@@ -25,10 +26,11 @@ void Entity::ConstructCollision(bool bRecenter)
 
 Entity::Entity()
 {
-	this->ClassName = typeid(*this).name();
+	//this->GameScene = Scene;
 	this->WorldBounds = this->GameDataManager->WorldBounds;
 	//LOG("Base constructor called:", "");
 }
+
 
 Entity::~Entity()
 {
@@ -48,20 +50,9 @@ void Entity::UpdateEntity()
 }
 
 
-void Entity::CallEntityDestruction()
-{
-	this->bDestroyEntity = true;
-}
-
 const sf::RectangleShape* Entity::GetCollisionShape()
 {
 	return this->CollisionRectangle;
-}
-
-
-bool Entity::GetEntityIsNeedToDestroy()
-{
-	return this->bDestroyEntity;
 }
 
 
@@ -70,10 +61,6 @@ const sf::Vector2f Entity::GetPosition()
 	return this->Position;
 }
 
-std::string Entity::GetClassName()
-{
-	return this->ClassName;
-}
 
 void Entity::PrintClassName(const std::string &Text)
 {

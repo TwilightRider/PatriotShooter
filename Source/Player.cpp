@@ -3,67 +3,50 @@
 
 void Player::InitVariables()
 {
-    this->FireProjectile = false;
-
-}
-
-
-void Player::SpawnProjectile()
-{
-    this->GameScene->AddObjectToScene(this->PlayerEntity->CurrentProjectile);
+    //this->FireProjectile = false;
+    this->Health = 100;
 }
 
 
 Player::Player()
 {
+    this->SetClassName("Player");
     this->InitVariables();
     // Construct needed objects
     this->PlayerController = new PlayerTurretController;
-    this->PlayerEntity = new TurretObject(GameDataManager->PlayerStartPosition);
-    
+
+    this->PlayerTurret = new TurretObject(GameDataManager->PlayerStartPosition);
     // Set player entity important variables
-    this->PlayerEntity->PosessedByPlayer = true;
+    this->PlayerTurret->PosessedByPlayer = true;
+    // Owner of turret
+    this->PlayerTurret->EntityOwner = this;
 
     // Set entity class to player controller to operate with it
-    this->PlayerController->PlayerEntity = this->PlayerEntity;
-
-    this->PlayerController->AssignToProjectileSpawn(std::bind(&Player::SpawnProjectile, this));
-
-    // Declare delegate for firing projectile
-    //std::function<void()> RegisterProjectileDelegate;
-    //RegisterProjectileDelegate = RegisterProjectile;
-
-    //RegisterProjectileDelegate = std::bind(&PlayerTurretController::FireProjectile, this, std::placeholders::_1);
-
-    //this->RegisterProjectile(1, std::bind(&PlayerTurretController::FireProjectile, this, std::placeholders::_1));
-    /*processData(15, std::bind(&MyClass::memberCallback, &obj, std::placeholders::_1));*/
-
-
+    this->PlayerController->PlayerTurret = this->PlayerTurret;
 }
-
-
 
 
 Player::~Player()
 {
-    delete this->PlayerEntity;
     delete this->PlayerController;
 }
 
 
-void Player::SetNewProperties()
-{
-
-
-}
-
-
-void Player::UpdatePlayer()
+void Player::UpdateEntity()
 {
     this->UpdatePlayerController();
+}
+
+void Player::NotifySceneWasChanged()
+{
 
 }
 
+
+void Player::SendObjectToScene()
+{
+
+}
 
 
 void Player::UpdatePlayerController()

@@ -1,7 +1,10 @@
 #include "Enemy.h"
+#include "Player.h"
+
 
 void Enemy::ConstructEnemy()
 {
+	
 	this->InitVariables();
 	this->ConstructCollision(false);
 }
@@ -49,25 +52,54 @@ void Enemy::UpdatePosition()
 	this->Position = EnemySprite.getPosition();
 }
 
+
 void Enemy::UpdateEntity()
 {
 	this->UpdatePosition();
+	this->TrackEnemyOutBounds();
 }
+
+
+void Enemy::TrackEnemyOutBounds()
+{
+	// if enemy is past the bottom
+	if (this->EnemySprite.getPosition().y + this->GetSize().y > this->GameDataManager->WindowSize.y)
+	{
+		this->CallEntityDestruction();
+		this->MainPlayer->Health -= this->HealtDecrementOutBounds;
+	}
+}
+
+
+void Enemy::NotifySceneWasChanged()
+{
+
+}
+
+
+void Enemy::SendObjectToScene()
+{
+	this->GameDataManager->AddNewObjectToScene(this);
+}
+
+
+Enemy::Enemy(Enums::EnemyClass EnemyLevel)
+{
+	this->SetClassName("Enemy");
+	this->SendObjectToScene();
+	this->EnemyLevel = EnemyLevel;
+	this->ConstructEnemy();
+}
+
 
 const sf::Sprite& Enemy::GetEnemySprite()
 {
 	return this->EnemySprite;
 }
 
-sf::Vector2f Enemy::GetSize()
+
+const sf::Vector2f Enemy::GetSize()
 {
 	return this->Size;
-}
-
-
-Enemy::Enemy(Enums::EnemyClass EnemyLevel)
-{
-	this->EnemyLevel = EnemyLevel;
-	this->ConstructEnemy();
 }
 

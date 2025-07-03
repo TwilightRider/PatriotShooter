@@ -1,10 +1,36 @@
 #include "Projectile.h"
+#include "Player.h"
 
 
 void Projectile::UpdateEntity()
 {
 	Entity::UpdateEntity();
 	this->UpdateProjectile();
+}
+
+
+void Projectile::SendObjectToScene()
+{
+	this->GameDataManager->AddNewObjectToScene(this);
+}
+
+void Projectile::NotifySceneWasChanged()
+{
+	this->GameDataManager->GetEntitiesByClassName("Enemy", this->pEnemies);
+}
+
+
+Projectile::Projectile(const sf::Vector2f& Start, const sf::Vector2f& End) 
+{
+	this->SendObjectToScene();
+	this->SetClassName("Projectile");
+	// Add projectile to scene
+	this->StartPosition = Start;
+	this->DestinationPosition = End;
+	this->CollisionSize.x = this->ProjectileCollisionX;
+	this->CollisionSize.y = this->ProjectileCollisionY;
+	this->CollisionLocalOffset.y = ProjectileCollisionYOffset;
+	this->ConstructProjectile();
 }
 
 
@@ -27,6 +53,7 @@ void Projectile::ConstructProjectile()
 	this->SetSpriteRotation();
 }
 
+
 void Projectile::UpdateProjectile()
 {
 	//Move to another position using direction vertor
@@ -39,18 +66,31 @@ void Projectile::UpdateProjectile()
 	this->CollisionRectangle->move(this->ProjectileDirection);
 	this->Position = this->Sprite.getPosition();
 
-	for (Enemy* IterEnemy : this->pEnemies)
+	// TODO find best location?
+
+	for (IEntity* It : this->pEnemies)
 	{
+		Enemy* IterEnemy = static_cast<Enemy*>(It);
+
 		// Enemy collision rectangle
 		const sf::RectangleShape* CurrentEnemyCollision = IterEnemy->GetCollisionShape();
 		const sf::RectangleShape* ProjectileCollision = this->GetCollisionShape();
 		// Here successfull hit
 		if (CurrentEnemyCollision->getGlobalBounds().findIntersection(ProjectileCollision->getGlobalBounds()))
 		{
-			this->bEntityHit = true;
+			// Send kill reward to player if was shoot from player
+			if (this->EntityOwner)
+			{
+				Player* AsPlayer = static_cast<Player*>(this->EntityOwner);
+				AsPlayer->PlayerPoints += IterEnemy->KillReward;
+			}
 			// Send to enemy class that it was hit
 			IterEnemy->bEntityHit = true;
-			break;
+			IterEnemy->CallEntityDestruction();
+			// Remove projectile after hit
+			this->bEntityHit = true;
+			this->CallEntityDestruction();
+			return;
 		}
 	}
 }
@@ -67,23 +107,4 @@ void Projectile::SetSpriteRotation()
 	{
 		this->CollisionRectangle->setRotation(AngleToTarget);
 	}
-}
-
-
-void Projectile::SetEnemiesInScene(std::vector<Enemy*> InEnemyList)
-{
-	this->pEnemies = InEnemyList;
-}
-
-
-// Constructor
-Projectile::Projectile(const sf::Vector2f& Start, const sf::Vector2f& End)
-{	
-	this->StartPosition = Start;
-	this->DestinationPosition = End;
-	this->CollisionSize.x = this->ProjectileCollisionX;
-	this->CollisionSize.y = this->ProjectileCollisionY;
-	this->CollisionLocalOffset.y = ProjectileCollisionYOffset;
-
-	this->ConstructProjectile();
 }

@@ -6,15 +6,40 @@
 #include "HelperFunctions.h"
 #include "EntityManager.h"
 #include "GameDataManager.h"
+#include "EntityInterface.h"
 
+class Scene;
 
-class Entity
+class Entity : public IEntity
 {
+public:
+	// Forward decalration
+	//Scene* GameScene = nullptr;
+	// Constructor Destructor
+	Entity();
+	virtual ~Entity();
+
+	sf::Vector2f WorldBounds;
+	float DeltaTime = 0.f;
+	float DeltaTimer = 0.f;
+	float Timer = 0.f;
+	float EntityLifeTime = 0;
+	float EntityMaxLifeTime = 0;
+
+	bool bEntityHit = false;
+	bool bDrawDebugCollision = false;
+
+	void PrintClassName(const std::string& Text);
+	
+
+	const sf::RectangleShape* GetCollisionShape();
+	const sf::Vector2f GetPosition();
+	void UpdateEntity() override;
+
 protected:
+	GameDataManager* GameDataManager = GameDataManager::GetInstance();
 	EntityManager* EntityManager = EntityManager::GetInstance();
 	ContentManager* ContentManager = ContentManager::GetInstance();
-	GameDataManager* GameDataManager = GameDataManager::GetInstance();
-
 	sf::Texture& DefaultTexture = ContentManager->DefaultTexture;
 
 	sf::RectangleShape* CollisionRectangle = nullptr;
@@ -31,31 +56,6 @@ protected:
 
 	bool KillOutsideOfWindow();
 	virtual void ConstructCollision(bool bRecenter);
-public:
-
-	// Constructor Destructor
-	Entity();
-	virtual ~Entity();
-	sf::Vector2f WorldBounds;
-	float DeltaTime = 0.f;
-	float DeltaTimer = 0.f;
-	float Timer = 0.f;
-	float EntityLifeTime = 0;
-	float EntityMaxLifeTime = 0;
 	
-	bool bEntityHit = false;
-	bool bDrawDebugCollision = false;
-	bool GetEntityIsNeedToDestroy();
-
-	virtual void UpdateEntity();
-	void PrintClassName(const std::string& Text);
-	void CallEntityDestruction();
-	const sf::RectangleShape* GetCollisionShape();
-	std::string GetClassName();
-	const sf::Vector2f GetPosition();
-	
-private:
-	bool bDestroyEntity = false;
-	std::string ClassName = "";
 };
 

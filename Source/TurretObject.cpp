@@ -19,7 +19,16 @@ void TurretObject::ForceSetPosition(const sf::Vector2f& Position)
 
 void TurretObject::FireProjectile()
 {
-	this->CurrentProjectile = new Projectile(this->TurretSprite.getPosition(), this->GameDataManager->MousePositionView);
+	Projectile* NewProjectile = new Projectile(this->TurretSprite.getPosition(), this->GameDataManager->MousePositionView);
+	if (this->PosessedByPlayer && this->EntityOwner)
+	{
+		NewProjectile->EntityOwner = this->EntityOwner;
+	}
+	else
+	{
+		// if no owner set turret as owner
+		NewProjectile->EntityOwner = this;
+	}
 }
 
 
@@ -64,25 +73,12 @@ void TurretObject::MoveTurret()
 }
 
 
-// Constructor
-TurretObject::TurretObject(const sf::Vector2f& Position)
-{
-	//LOG("Child turret constructor called:", "");
-	this->Position = Position;
-	this->ConstructTurret();
-}
-
-TurretObject::~TurretObject()
-{
-
-}
-
 void TurretObject::ConstructTurret()
 {
 	// Construct collision
 	//this->ConstructCollision(this->ProjectileCollisionX, this->ProjectileCollisionY, true);
 	//this->CollisionRectangle->setPosition(this->StartPosition);
-	
+
 
 	// Construct sprite and set rotation and position
 	this->BaseSprite.setPosition(this->Position);
@@ -99,4 +95,24 @@ void TurretObject::ConstructTurret()
 	this->TurretLocalOffset += this->BaseSprite.getOrigin();
 	this->MoveTurretByBase();
 
+}
+
+void TurretObject::SendObjectToScene()
+{
+	this->GameDataManager->AddNewObjectToScene(this);
+}
+
+void TurretObject::NotifySceneWasChanged()
+{
+
+}
+
+
+TurretObject::TurretObject(const sf::Vector2f& Position)
+{
+	this->SetClassName("Turret");
+	this->SendObjectToScene();
+	this->InitVariables();
+	this->Position = Position;
+	this->ConstructTurret();
 }

@@ -1,86 +1,132 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#include "Entity.h"
-#include "Enemy.h"
-#include "Projectile.h"
+#include <string>
+#include "HelperFunctions.h"
+#include "EntityInterface.h"
 
 
 class Scene
 {
 private:
-	std::vector<Enemy*> pEnemies;
-	std::vector<Projectile*> pProjectiles;
+	//Player* MainPlayer = nullptr;
+	//std::vector<TurretObject*> Turrets;
+	//std::vector<Enemy*> pEnemies;
+	//std::vector<Projectile*> pProjectiles;
 
-	void SendEnemiesToProjectiles()
-	{
-		for (Projectile* CurrentProjectile : pProjectiles)
-		{
-			CurrentProjectile->SetEnemiesInScene(pEnemies);
-		}
-	}
+	std::vector<IEntity*> SceneEntities;
+
+	std::string SceneName = "";
+	std::string ScenePath = "";
 
 public:
-	const std::vector<Enemy*>& GetEnemies()
+	// Constructor
+	Scene(int MaxEnemies, int MaxProjectiles)
 	{
-		return pEnemies;
+		this->SceneEntities.reserve(30);
 	}
 
-	const std::vector<Projectile*>& GetProjectiles()
+	std::vector<IEntity*> GetEntities() const
 	{
-		return pProjectiles;
+		return this->SceneEntities;
 	}
 
 
 	int GetObjectsCount()
 	{
-		LOG("Projectile count: ", std::to_string(pProjectiles.size()));
-		LOG("Enemies count: ", std::to_string(pEnemies.size()));
-		return pEnemies.size() + pProjectiles.size();
+		//LOG("Objects in scene: ", std::to_string(SceneEntities.size()));
+		return SceneEntities.size();
 	}
 
-	void AddObjectToScene(Entity* NewObject)
+
+	void UpdateScene()
 	{
-		GetObjectsCount();
-		if (typeid(*NewObject) == typeid(Enemy))
+		for (unsigned i = 0; i < this->SceneEntities.size(); i++)
 		{
-			pEnemies.push_back(static_cast<Enemy*>(NewObject));
-			SendEnemiesToProjectiles();
-		}
-		else if (typeid(*NewObject) == typeid(Projectile))
-		{
-			pProjectiles.push_back(static_cast<Projectile*>(NewObject));
-			SendEnemiesToProjectiles();
+			IEntity* Entity = this->SceneEntities[i];
+			if (Entity != nullptr)
+			{
+				if (Entity->GetEntityIsNeedToDestroy())
+				{
+					this->RemoveFromScene(Entity);
+					delete Entity;
+					//LOG("Scene size", std::to_string(this->SceneEntities.size()));
+				}
+				else
+				{
+					Entity->UpdateEntity();
+				}
+			}
 		}
 	}
 
-	void RemoveFromScene(Entity* ObjectToRemove, int Index)
+
+	void ReturnEntitesByClassName(const std::string& Name, std::vector<IEntity*>& OutEntities)
+	{
+		OutEntities.clear();
+		for (IEntity* Entity : this->SceneEntities)
+		{
+			if (Entity->GetClassName() == Name)
+			{
+				OutEntities.push_back(Entity);
+			}
+		}
+	}
+
+
+	void NotifyEntitiesSceneStateChanged()
+	{
+		// Notify all entities that something was add
+		for (IEntity* Entity : this->SceneEntities)
+		{
+			Entity->NotifySceneWasChanged();
+		}
+	}
+
+
+	int GetCountByClassName(const std::string& Name)
+	{
+		int Count = 0;
+		for (IEntity* Entity : this->SceneEntities)
+		{
+			if (Entity->GetClassName() == Name)
+			{
+				Count += 1;
+			}
+		}
+		return Count;
+	}
+
+
+	void AddObjectToScene(IEntity* NewObject)
 	{
 		GetObjectsCount();
-		if (typeid(*ObjectToRemove) == typeid(Enemy))
+		SceneEntities.push_back(NewObject);
+		this->NotifyEntitiesSceneStateChanged();
+	}
+
+
+	void RemoveFromScene(IEntity* ObjectToRemove)
+	{
+		GetObjectsCount();
+
+		for (unsigned i = 0; i < SceneEntities.size(); i++)
 		{
-			pEnemies.erase(pEnemies.begin() + Index);
-			SendEnemiesToProjectiles();
-		}
-		else if (typeid(*ObjectToRemove) == typeid(Projectile))
-		{
-			pProjectiles.erase(pProjectiles.begin() + Index);
+			IEntity* It = SceneEntities[i];
+			if (It == ObjectToRemove)
+			{
+				SceneEntities.erase(SceneEntities.begin() + i);
+				this->NotifyEntitiesSceneStateChanged();
+				break;
+			}
 		}
 	}
 
 	void ClearScene()
 	{
-		pEnemies.clear();
-		pProjectiles.clear();
+		SceneEntities.clear();
 	}
 
-
-	// Constructor
-	Scene(int MaxEnemies, int MaxProjectiles)
-	{
-		pEnemies.reserve(MaxEnemies);
-		pProjectiles.reserve(MaxProjectiles);
-	}
 };
 
 

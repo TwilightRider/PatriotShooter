@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
@@ -7,22 +6,23 @@
 #include "Structs.h"
 #include "HelperFunctions.h"
 
+
+class Player;
 class Enemy : public Entity
 {
 private:
-	void ConstructEnemy();
-
 	sf::Sprite EnemySprite = HelperFunctions::ConstructSprite(DefaultTexture);
 	gamestructs::EnemyPreset* CurrentPreset = nullptr;
 
-	void InitVariables();
 	sf::Vector2f Size;
 	sf::Color Color;
-	
-	void UpdateEnemy();
+
+	void InitVariables();
 	void UpdatePosition();
 	
 public:
+	Player* MainPlayer = nullptr;
+	unsigned HealtDecrementOutBounds = 100;
 	// Properties
 	int EnemyId = 0;
 	sf::Vector2f CurrentPosition;
@@ -30,11 +30,15 @@ public:
 	unsigned int KillReward;
 	float DownMovementSpeed;
 	void ForceSetPosition(const sf::Vector2f& Position);
-	void UpdateEntity() override;
+	void ConstructEnemy();
 	const sf::Sprite& GetEnemySprite();
-	sf::Vector2f GetSize();
+	const sf::Vector2f GetSize();
+	void UpdateEntity() override;
+	void TrackEnemyOutBounds();
+
+	void NotifySceneWasChanged() override;
+	void SendObjectToScene() override;
 
 	Enemy(Enums::EnemyClass EnemyLevel);
-	
 };
 

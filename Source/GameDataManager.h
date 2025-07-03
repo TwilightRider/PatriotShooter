@@ -1,15 +1,23 @@
 #pragma once
 #include "SFML/System/Vector2.hpp"
+#include "EntityInterface.h"
+#include <vector>
+#include <string>
 
 
-
+// Scene forward declaration
+class Scene;
 class GameDataManager
 {
 public:
 	float DeltaTime = 0.f;
-	sf::Vector2f WorldBounds;
+	sf::Vector2f WorldBounds; // bigger than window
+	sf::Vector2f WindowSize;
 	sf::Vector2f MousePositionView;
 	sf::Vector2f PlayerStartPosition;
+
+	Scene* GameScene = nullptr;
+	IEntity* SpawnedEntity = nullptr;
 
 	static GameDataManager* GameDataExchangePtr;
 	static GameDataManager* GetInstance()
@@ -22,6 +30,10 @@ public:
 		// ======================================
 		return GameDataExchangePtr;
 	}
+
+	void AddNewObjectToScene(IEntity* InputEntity);
+	void GetEntitiesByClassName(const std::string& Name, std::vector<IEntity*>& OutEntities);
+
 
 private:
 	// Constructor Destructor

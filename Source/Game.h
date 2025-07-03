@@ -9,7 +9,7 @@
 
 #include "Enemy.h"
 #include "Projectile.h"
-#include "TurretObject.h"
+
 #include "Enums.h"
 #include "HelperFunctions.h"
 #include "Scene.h"
@@ -31,6 +31,7 @@ private:
 	sf::RenderWindow* GameWindow;
 	sf::Vector2f WorldBounds;
 	sf::Vector2f WorldBoundsBias;
+	sf::Vector2f WindowSize;
 	sf::VideoMode VideoMode;
 	
 	// Text
@@ -66,12 +67,13 @@ private:
 	unsigned MissedEnemies;
 	unsigned MaxMissedEnemies;
 	unsigned MaxEnemies;
+	unsigned EnemyCount;
+
 	unsigned LevelMaxPoints;
 	unsigned CurrentUserLevel;
 	unsigned EnemyIdCounter;
 	unsigned MaxProjectiles;
 	unsigned Health;
-	unsigned HealthDecrementRate;
 	bool LMBPressed;
 	bool GameLost;
 	bool RenderPopUpText;
@@ -84,10 +86,8 @@ private:
 	sf::Vector2i MousePositionWindow;
 	sf::Vector2f MousePositionView;
 
-	// TEMPORAL Populate enemies for projectiles
-	void SendEnemiesToProjectiles();
-
 	// Init methods
+	void InitGameScene();
 	void InitGameSession();
 	void initWindow();
 	void InitWorldSize();
@@ -101,8 +101,9 @@ private:
 	void pollEvents();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 	void UpdateMousePositions();
 	void UpdatePlayer();
-	void UpdateProjectiles();
-	void UpdateEnemies();
+	//void UpdateProjectiles();
+	void HandleEnemyCounts();
+	void UpdateScene();
 	void UpdateCursor();
 	void UpdateText();
 	void UpdateGameSessionState();
