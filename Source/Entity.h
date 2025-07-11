@@ -5,12 +5,11 @@
 #include "ContentManager.h" 
 #include "HelperFunctions.h"
 #include "EntityManager.h"
-#include "GameDataManager.h"
-#include "EntityInterface.h"
+#include "SimpleEntity.h"
 
 class Scene;
 
-class Entity : public IEntity
+class Entity : public ESimpleEntity
 {
 public:
 	// Forward decalration
@@ -19,25 +18,19 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	sf::Vector2f WorldBounds;
-	float DeltaTime = 0.f;
-	float DeltaTimer = 0.f;
-	float Timer = 0.f;
-	float EntityLifeTime = 0;
-	float EntityMaxLifeTime = 0;
+	float EntityLifeTime = 0.f;
+	float EntityMaxLifeTime = 0.f;
 
 	bool bEntityHit = false;
 	bool bDrawDebugCollision = false;
 
 	void PrintClassName(const std::string& Text);
 	
-
 	const sf::RectangleShape* GetCollisionShape();
-	const sf::Vector2f GetPosition();
+	const sf::Vector2f GetPosition() const;
 	void UpdateEntity() override;
 
 protected:
-	GameDataManager* GameDataManager = GameDataManager::GetInstance();
 	EntityManager* EntityManager = EntityManager::GetInstance();
 	ContentManager* ContentManager = ContentManager::GetInstance();
 	sf::Texture& DefaultTexture = ContentManager->DefaultTexture;
@@ -54,7 +47,7 @@ protected:
 	bool bHasCollision = false;
 	bool bUseScreenKillZone = false;
 
-	bool KillOutsideOfWindow();
+	bool KillOutsideOfWindow() const;
 	virtual void ConstructCollision(bool bRecenter);
 	
 };

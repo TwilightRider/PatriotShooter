@@ -70,3 +70,18 @@ sf::Vector2f HelperFunctions::CalculateNormalizedVector(const sf::Vector2f& Star
 
 	return DirectionVector;
 }
+
+sf::Vector2f HelperFunctions::RandomPointInCircle(float Radius, sf::Vector2f& InitialPosition)
+{
+	sf::Vector2f Position;
+	float randomRadius = Radius * sqrt(Random());
+	float theta = Random() * 2 * M_PI;
+	Position.x = InitialPosition.x + randomRadius * cos(theta);
+	Position.y = InitialPosition.y + randomRadius * sin(theta);
+	return Position;
+}
+
+float HelperFunctions::Random()
+{
+	return ((float)rand() / RAND_MAX);
+}

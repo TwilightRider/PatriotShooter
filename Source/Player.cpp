@@ -5,17 +5,20 @@ void Player::InitVariables()
 {
     //this->FireProjectile = false;
     this->Health = 100;
+    this->PlayerLevel = 1;
+    this->PlayerPoints;
 }
 
 
 Player::Player()
 {
     this->SetClassName("Player");
+    SendObjectToScene();
     this->InitVariables();
     // Construct needed objects
     this->PlayerController = new PlayerTurretController;
 
-    this->PlayerTurret = new TurretObject(GameDataManager->PlayerStartPosition);
+    this->PlayerTurret = new TurretObject (GameDataManager->PlayerStartPosition, true);
     // Set player entity important variables
     this->PlayerTurret->PosessedByPlayer = true;
     // Owner of turret
@@ -28,6 +31,7 @@ Player::Player()
 
 Player::~Player()
 {
+    LOG("player destructor", "");
     delete this->PlayerController;
 }
 
@@ -45,7 +49,7 @@ void Player::NotifySceneWasChanged()
 
 void Player::SendObjectToScene()
 {
-
+    this->GameDataManager->AddNewObjectToScene(this);
 }
 
 

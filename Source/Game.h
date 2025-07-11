@@ -9,6 +9,7 @@
 
 #include "Enemy.h"
 #include "Projectile.h"
+#include "HostileRocketLauncher.h"
 
 #include "Enums.h"
 #include "HelperFunctions.h"
@@ -50,15 +51,18 @@ private:
 	sf::Texture CrosshairTexture = ContentManager::GetInstance()->CrosshairTexture;
 	sf::Sprite CrosshairSprite = HelperFunctions::ConstructSprite(CrosshairTexture);
 
+	// Hostile background rocket launcher
+	EHostileRocketLauncher* HostileRocketLauncher;
+
 	// Get instance of exchange manager
 	GameDataManager* GameDataManager = GameDataManager::GetInstance();
 
 	// Declare main player
-	Player* MainPlayer = nullptr;
+	Player* MainPlayer;
 	sf::Vector2f PlayerStartPosition;
 
 	// Scene container
-	Scene* GameScene = nullptr;
+	Scene* GameScene;
 	
 	// Game logic
 	float EnemySpawnTimer;
@@ -96,6 +100,7 @@ private:
 	void InitCursor();
 	void InitPlayerStartPosition();
 	void InitGameDataManager();
+	void SpawnHostileRocketLauncher();
 
 	// Update methods
 	void pollEvents();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

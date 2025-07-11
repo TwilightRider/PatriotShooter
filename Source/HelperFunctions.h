@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
 
+#define M_PI 3.14159265358979323846
 #define LOG(logtype, msg) std::cout << logtype << msg << std::endl;
 
 class HelperFunctions
@@ -24,6 +26,10 @@ public:
 	static bool CircleCollisionDetection(sf::Vector2f Position1, sf::Vector2f Position2, float Radius1, float Radius2);
 
 	static float GetRadiusFromBounds(float XSize, float YSize);
+
+	static sf::Vector2f RandomPointInCircle(float Radius, sf::Vector2f& InitialPosition);
+
+	static float Random();
 
 };
 

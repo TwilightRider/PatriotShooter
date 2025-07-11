@@ -25,7 +25,6 @@ public:
 	float ProjectileCollisionY = 15.f;
 	float ProjectileCollisionYOffset = 10.f;
 	float ProjectileSpeed = 13.f;
-	float EntityLifeTime = 5.;
 
 	void ConstructProjectile();
 	virtual void UpdateEntity() override;

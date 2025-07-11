@@ -13,7 +13,9 @@ private:
 	sf::Vector2f MovementDirection;
 	// Get instance of exchange manager
 	GameDataManager* GameDataManager = GameDataManager::GetInstance();
+
 public:
+	bool ReceiveInput;
 	// Contructor Destructor
 	PlayerTurretController();
 	~PlayerTurretController() {};
@@ -21,14 +23,14 @@ public:
 	sf::Angle HalfPI = sf::Angle(sf::radians(1.570785f));
 	sf::Vector2f MousePosition;
 	sf::Vector2f CurrentPosition;
-	sf::Vector2f PlayerDirection = sf::Vector2f ({0.f, 1.f });
+	sf::Vector2f PlayerDirection;
 
-	sf::Angle TurretAngle = sf::Angle(sf::radians(0));
-	sf::Angle PlayerAngle = sf::Angle(sf::radians(0));
+	sf::Angle TurretAngle;
+	sf::Angle PlayerAngle;
 
 	TurretObject* PlayerTurret = nullptr;
 
-	float ForwardMovementSpeed = 60.f;
+	float ForwardMovementSpeed = 100.f;
 	float PlayerRotationSpeed = 2.f;
 	float BackwardsMovementScalar = 0.5f;
 	float DeltaTime = 0.f;

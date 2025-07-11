@@ -17,10 +17,9 @@ protected:
 
 public:
 	IEntity* EntityOwner = nullptr;
-
 	std::string GetClassName();
-	virtual void UpdateEntity() = 0;
-	bool GetEntityIsNeedToDestroy();
+	bool GetEntityIsNeedToDestroy() const;
 	void CallEntityDestruction();
+	virtual void UpdateEntity() = 0;
 	virtual void NotifySceneWasChanged() = 0;
 };

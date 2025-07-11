@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\EntytiesSubclasses">
+      <UniqueIdentifier>{17c452ac-9552-43e8-8c41-828f9ed3bf6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EntityBases">
+      <UniqueIdentifier>{0adad7ac-85ae-469c-9ed9-40d7131756e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{ca175b20-2380-4ed2-a7b8-ecb739c6f9ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\General">
+      <UniqueIdentifier>{88867379-e971-4216-9a40-4b93997395dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -21,85 +33,97 @@
     <ClCompile Include="Source\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\HelperFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ContentManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TurretObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\PlayerTurretController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Player.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files\EntytiesSubclasses</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameDataManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Projectile.cpp">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TurretObject.cpp">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HostileRocketLauncher.cpp">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Header Files\EntityBases</Filter>
     </ClCompile>
     <ClCompile Include="Source\EntityInterface.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files\EntityBases</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ContentManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameDataManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Header Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SimpleEntity.cpp">
+      <Filter>Header Files\EntityBases</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HelperFunctions.cpp">
+      <Filter>Header Files\General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HelperFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ContentManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TurretObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\PlayerTurretController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Structs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Player.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\EntytiesSubclasses</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameDataManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\TurretObject.h">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile.h">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HostileRocketLauncher.h">
+      <Filter>Header Files\EntytiesSubclasses</Filter>
     </ClInclude>
     <ClInclude Include="Source\EntityInterface.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\EntityBases</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Header Files\EntityBases</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameDataManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ContentManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SimpleEntity.h">
+      <Filter>Header Files\EntityBases</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enums.h">
+      <Filter>Header Files\General</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Structs.h">
+      <Filter>Header Files\General</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Header Files\General</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HelperFunctions.h">
+      <Filter>Header Files\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

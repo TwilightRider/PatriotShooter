@@ -32,7 +32,7 @@ public:
 	void ForceSetPosition(const sf::Vector2f& Position);
 	void ConstructEnemy();
 	const sf::Sprite& GetEnemySprite();
-	const sf::Vector2f GetSize();
+	const sf::Vector2f GetSize() const;
 	void UpdateEntity() override;
 	void TrackEnemyOutBounds();
 

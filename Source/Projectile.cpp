@@ -56,6 +56,7 @@ void Projectile::ConstructProjectile()
 
 void Projectile::UpdateProjectile()
 {
+	Entity::UpdateEntity();
 	//Move to another position using direction vertor
 	// And check for collision with enemy
 	// Stop update for this projectile
@@ -81,6 +82,11 @@ void Projectile::UpdateProjectile()
 			// Send kill reward to player if was shoot from player
 			if (this->EntityOwner)
 			{
+				// Ignore hit to owner
+				if (this->EntityOwner == IterEnemy)
+				{
+					continue;
+				}
 				Player* AsPlayer = static_cast<Player*>(this->EntityOwner);
 				AsPlayer->PlayerPoints += IterEnemy->KillReward;
 			}

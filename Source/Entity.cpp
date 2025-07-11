@@ -35,13 +35,17 @@ Entity::Entity()
 Entity::~Entity()
 {
 	//LOG("Destruct Entity", "");
-	delete this->CollisionRectangle;
+	if (this->CollisionRectangle != nullptr)
+	{
+		delete this->CollisionRectangle;
+	}
 }
 
 
 void Entity::UpdateEntity()
 {
 	this->DeltaTime = this->GameDataManager->DeltaTime;
+	this->EntityLifeTime += this->DeltaTime;
 	this->KillOutsideOfWindow();
 	if ((this->EntityLifeTime >= this->EntityMaxLifeTime && this->EntityMaxLifeTime != 0) || this->KillOutsideOfWindow())
 	{
@@ -56,7 +60,7 @@ const sf::RectangleShape* Entity::GetCollisionShape()
 }
 
 
-const sf::Vector2f Entity::GetPosition()
+const sf::Vector2f Entity::GetPosition() const
 {
 	return this->Position;
 }
@@ -68,7 +72,7 @@ void Entity::PrintClassName(const std::string &Text)
 }
 
 
-bool Entity::KillOutsideOfWindow()
+bool Entity::KillOutsideOfWindow() const
 {
 	if (this->bUseScreenKillZone)
 	{

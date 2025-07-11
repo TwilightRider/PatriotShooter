@@ -14,14 +14,14 @@ private:
 	void UpdatePlayerController();
 
 public:
-	int PlayerLevel = 1;
-	int PlayerPoints = 0;
+	unsigned PlayerLevel;
+	unsigned PlayerPoints;
 
 	unsigned Health;
 	unsigned HealthDecrementRate = 100;
 
 	PlayerTurretController* PlayerController = nullptr;
-	TurretObject* PlayerTurret = nullptr;
+	TurretObject* PlayerTurret;
 
 	// Constructor destructor
 	Player();

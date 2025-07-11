@@ -57,6 +57,7 @@ void TurretObject::MoveTurret()
 	if (this->Movable || this->PosessedByPlayer)
 	{
 		this->BaseSprite.move(this->MovementDiretion * this->MovementSpeed * this->DeltaTime);
+
 		// Update class position variable after movement
 		this->Position = BaseSprite.getPosition();
 
@@ -108,10 +109,13 @@ void TurretObject::NotifySceneWasChanged()
 }
 
 
-TurretObject::TurretObject(const sf::Vector2f& Position)
+TurretObject::TurretObject(const sf::Vector2f& Position, bool AddToScene)
 {
 	this->SetClassName("Turret");
-	this->SendObjectToScene();
+	if (AddToScene)
+	{
+		this->SendObjectToScene();
+	}
 	this->InitVariables();
 	this->Position = Position;
 	this->ConstructTurret();

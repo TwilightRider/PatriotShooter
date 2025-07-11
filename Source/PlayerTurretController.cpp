@@ -18,7 +18,7 @@ void PlayerTurretController::UpdatePlayerController()
 		this->TrackInput();
 		// Rotate turret
 		this->PlayerTurret->TurretAngle = this->SetTurretAngles();
-		this->PlayerTurret->UpdateEntity();
+		//this->PlayerTurret->UpdateEntity();
 	}
 }
 
@@ -26,6 +26,10 @@ void PlayerTurretController::UpdatePlayerController()
 void PlayerTurretController::InitVariables()
 {
 	this->bMousePressed = false;
+	this->ReceiveInput = true;
+	this->TurretAngle = sf::Angle(sf::radians(0));
+	this->PlayerAngle = sf::Angle(sf::radians(0));
+	this->PlayerDirection = sf::Vector2f({ 0.f, 1.f });
 }
 
 
@@ -92,7 +96,7 @@ void PlayerTurretController::TrackInput()
 	
 	this->PlayerAngle = sf::Angle(sf::radians(this->DeltaTime));
 	this->PlayerDirection = this->PlayerDirection.rotatedBy(sf::Angle(sf::radians(this->DeltaTime * RotationDirection * RotationSpeed)));
-
+	
 	// Send direction to player
 	this->PlayerTurret->MovementDiretion = this->PlayerDirection * MoveDir;
 	this->PlayerTurret->MovementSpeed = MovementSpeed;

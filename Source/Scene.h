@@ -9,13 +9,7 @@
 class Scene
 {
 private:
-	//Player* MainPlayer = nullptr;
-	//std::vector<TurretObject*> Turrets;
-	//std::vector<Enemy*> pEnemies;
-	//std::vector<Projectile*> pProjectiles;
-
 	std::vector<IEntity*> SceneEntities;
-
 	std::string SceneName = "";
 	std::string ScenePath = "";
 
@@ -31,13 +25,11 @@ public:
 		return this->SceneEntities;
 	}
 
-
 	int GetObjectsCount()
 	{
 		//LOG("Objects in scene: ", std::to_string(SceneEntities.size()));
 		return SceneEntities.size();
 	}
-
 
 	void UpdateScene()
 	{
@@ -49,7 +41,6 @@ public:
 				if (Entity->GetEntityIsNeedToDestroy())
 				{
 					this->RemoveFromScene(Entity);
-					delete Entity;
 					//LOG("Scene size", std::to_string(this->SceneEntities.size()));
 				}
 				else
@@ -59,7 +50,6 @@ public:
 			}
 		}
 	}
-
 
 	void ReturnEntitesByClassName(const std::string& Name, std::vector<IEntity*>& OutEntities)
 	{
@@ -73,7 +63,6 @@ public:
 		}
 	}
 
-
 	void NotifyEntitiesSceneStateChanged()
 	{
 		// Notify all entities that something was add
@@ -82,7 +71,6 @@ public:
 			Entity->NotifySceneWasChanged();
 		}
 	}
-
 
 	int GetCountByClassName(const std::string& Name)
 	{
@@ -97,14 +85,12 @@ public:
 		return Count;
 	}
 
-
 	void AddObjectToScene(IEntity* NewObject)
 	{
 		GetObjectsCount();
 		SceneEntities.push_back(NewObject);
 		this->NotifyEntitiesSceneStateChanged();
 	}
-
 
 	void RemoveFromScene(IEntity* ObjectToRemove)
 	{
@@ -115,6 +101,7 @@ public:
 			IEntity* It = SceneEntities[i];
 			if (It == ObjectToRemove)
 			{
+				delete SceneEntities[i];
 				SceneEntities.erase(SceneEntities.begin() + i);
 				this->NotifyEntitiesSceneStateChanged();
 				break;
@@ -124,9 +111,15 @@ public:
 
 	void ClearScene()
 	{
+		for (unsigned i = 0; i < this->SceneEntities.size(); i++)
+		{
+			if (SceneEntities[i] != nullptr)
+			{
+				delete SceneEntities[i];
+			}
+		}
 		SceneEntities.clear();
 	}
-
 };
 
 

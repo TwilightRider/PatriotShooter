@@ -98,7 +98,7 @@ const sf::Sprite& Enemy::GetEnemySprite()
 }
 
 
-const sf::Vector2f Enemy::GetSize()
+const sf::Vector2f Enemy::GetSize() const
 {
 	return this->Size;
 }

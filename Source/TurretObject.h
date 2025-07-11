@@ -42,7 +42,7 @@ public:
 	void NotifySceneWasChanged() override;
 
 	// Constructor Destructorb
-	TurretObject(const sf::Vector2f& Position);
+	TurretObject(const sf::Vector2f& Position, bool AddToScene);
 	virtual ~TurretObject() {};
 
 private:

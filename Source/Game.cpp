@@ -5,6 +5,10 @@ void Game::InitGameSession()
 {
     // Main function for start and game restart
     // Game logic
+    this->MainPlayer = nullptr;
+    this->HostileRocketLauncher = nullptr;
+    this->GameScene = nullptr;
+
     this->GameLost = false;
     this->PauseGame = false;
     this->RenderPopUpText = false;
@@ -29,6 +33,12 @@ void Game::InitGameSession()
 
 void Game::RestartGame()
 {
+    // INVALIDATE PLAYER TEMPORAL
+    //this->GameScene->RemoveFromScene(this->MainPlayer);
+    //this->MainPlayer = nullptr;
+    //****************************//
+    
+    GameScene->ClearScene();
     this->InitGameSession();
 }
 
@@ -101,6 +111,11 @@ void Game::InitGameDataManager()
     this->GameDataManager->GameScene = this->GameScene;
 }
 
+void Game::SpawnHostileRocketLauncher()
+{
+    // We need only one instance of it
+    this->HostileRocketLauncher = new EHostileRocketLauncher;
+}
 
 void Game::InitGameScene()
 {
@@ -108,18 +123,12 @@ void Game::InitGameScene()
     {
         this->GameScene = new Scene(this->MaxEnemies, 30);
     }
-    else
-    {
-        GameScene->ClearScene();
-    }
 }
-
 
 const bool Game::isRunning() const
 {
 	return this->GameWindow->isOpen();
 }
-
 
 void Game::update()
 {
@@ -132,7 +141,6 @@ void Game::update()
     this->UpdateMousePositions();
     this->UpdateText();
 }
-
 
 void Game::pollEvents()
 {
@@ -182,7 +190,6 @@ void Game::pollEvents()
     }
 }
 
-
 void Game::UpdateMousePositions()
 {
     this->MousePositionWindow = sf::Mouse::getPosition(*this->GameWindow);
@@ -199,10 +206,9 @@ void Game::UpdateScene()
     this->GameScene->UpdateScene();
 }
 
-
 void Game::UpdatePlayer()
 {
-    this->MainPlayer->UpdateEntity();
+    //this->MainPlayer->UpdateEntity();
     // Update text user points and level
     this->UserLevelPoints = this->MainPlayer->PlayerPoints;
     this->CurrentUserLevel = this->MainPlayer->PlayerLevel;

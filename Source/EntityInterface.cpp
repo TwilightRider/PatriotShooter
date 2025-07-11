@@ -5,7 +5,7 @@ std::string IEntity::GetClassName()
     return this->ClassName;
 }
 
-bool IEntity::GetEntityIsNeedToDestroy()
+bool IEntity::GetEntityIsNeedToDestroy() const
 {
     return this->bDestroyEntity;
 }
